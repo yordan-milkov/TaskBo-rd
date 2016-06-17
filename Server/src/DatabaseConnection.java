@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DatabaseConnection
@@ -86,6 +88,57 @@ public class DatabaseConnection
 		return dataArray;
 	}
 	
+	public	List< Map<String, String> >	GetUserGroups()
+	{
+		List< Map<String, String> > list = null;
+		
+		try
+		{
+			String	query	= "SELECT groupusers.groupUID, groups.name, groups.description FROM groupusers INNER JOIN groups ON groupusers.groupUID = groups.UID WHERE groupusers.userUID = '" + userUID + "'";
+			PreparedStatement getUserData;
+			getUserData = sqlConnection.prepareStatement( query );
+			ResultSet result = getUserData.executeQuery();
+			list = ResultToMapList( result );
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	public	List< Map<String, String> >	GetIssues(int groupUID)
+	{
+		List< Map<String, String> > list = null;
+		/*
+		try
+		{
+			String	query	= "SELECT groupusers.groupUID, groups.name, groups.description FROM groupusers INNER JOIN groups ON groupusers.groupUID = groups.UID WHERE groupusers.userUID = '" + userUID + "'";
+			PreparedStatement getUserData;
+			getUserData = sqlConnection.prepareStatement( query );
+			ResultSet result = getUserData.executeQuery();
+			list = ResultToMapList( result );
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		list = new ArrayList<Map<String, String>>();
+		Map<String, String>	i1 = new HashMap<>();
+		Map<String, String> i2 = new HashMap<>();
+		Map<String, String> i3 = new HashMap<>();
+		i1.put("name", "alabala");i1.put("description", "kikiriki");i1.put( "issueUID", "123" );
+		i2.put("name", "asdasdadd");i2.put("description", "dxghvjbnk");i2.put( "issueUID", "77" );
+		i3.put("name", "kkjklkj");i3.put("description", "jhhgfgvbn");i3.put( "issueUID", "154" );
+
+		list.add( i1 );
+		list.add( i2 );
+		list.add( i3 );
+		
+		
+		return list;
+	}
 	
 	private Map<String, String> ReultSetRowToMap( ResultSet result ) throws SQLException
 	{
@@ -98,5 +151,16 @@ public class DatabaseConnection
 		}
 		
 		return dataAray;
+	}
+	
+	private	List< Map<String, String> > ResultToMapList( ResultSet result ) throws SQLException
+	{
+		ArrayList< Map<String, String> > list = new ArrayList< Map<String, String> >();
+		while ( result.next() )
+		{
+			list.add( this.ReultSetRowToMap( result ) );
+		}
+		
+		return list;
 	}
 }

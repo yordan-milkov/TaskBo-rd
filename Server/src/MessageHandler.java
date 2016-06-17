@@ -5,8 +5,11 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,8 +21,8 @@ public class MessageHandler
 
 	public MessageHandler(Socket socket) throws IOException, SQLException
 	{
-		recived		= new BufferedReader( new InputStreamReader( socket.getInputStream() ) );
-		send		= new PrintWriter( new OutputStreamWriter( socket.getOutputStream() ) );
+		recived		= new BufferedReader( new InputStreamReader( socket.getInputStream(), "UTF-8" ) );
+		send		= new PrintWriter( new OutputStreamWriter( socket.getOutputStream(), "UTF-8" ) );
 		database	= new DatabaseConnection();		
 	}
 	
@@ -38,9 +41,10 @@ public class MessageHandler
 			{
 				if ( database.LoginUser( username, password ) )
 				{
+					success = true;
 					result.put( "res", "OK" );
 					
-					Map<String, String>  userData = database.GetUserData();
+					Map<String,  String>  userData = database.GetUserData();
 					this.DataMapToJSON( userData, result );
 				}
 				else
@@ -65,11 +69,60 @@ public class MessageHandler
 		return success;
 	}
 	
+	public	Boolean ExecuteMessage()
+	{
+		Boolean	success = false;
+		try
+		{
+			String	textMessage	= recived.readLine();
+			success	= (textMessage != null);
+			if ( success )
+			{
+				JSONObject	message	= new JSONObject( textMessage );
+				JSONArray	result	= new JSONArray();
+				
+				switch ( message.getString( "key" ) )
+				{
+				case "getGroups":
+					DataMapListToJSONArray( database.GetUserGroups(), result );
+					break;
+					
+				case "getIssues":
+					DataMapListToJSONArray( database.GetIssues( message.getInt( "UID" ) ), result );
+					break;
+
+				default:
+					break;
+				} 
+				
+				send.println( result.toString() );
+				send.flush();
+			}
+			
+		} catch (IOException | JSONException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return success;
+	}
+	
 	private void DataMapToJSON(Map<String, String> map, JSONObject result) throws JSONException
 	{
-		for ( Map.Entry<String, String> entry : map.entrySet() )
+		for ( Entry<String, String> entry : map.entrySet() )
 		{
 			result.put( entry.getKey(), entry.getValue() );
+		}
+	}
+	
+	private void DataMapListToJSONArray(List<Map<String, String>> list, JSONArray result) throws JSONException
+	{
+		for ( Map<String, String> item : list )
+		{
+			JSONObject	object	= new JSONObject();
+			DataMapToJSON( item, object );
+			result.put( object );
 		}
 	}
 }

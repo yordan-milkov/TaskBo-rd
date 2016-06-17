@@ -36,6 +36,11 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+        android:name=".GroupActivity"
+        android:label="@string/title_activity_main"
+        android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

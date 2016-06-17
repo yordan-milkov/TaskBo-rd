@@ -372,8 +372,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 switch ( mStatus ) {
                     case "OK": {
-                        finish();
                         startActivity(new Intent( LoginActivity.this, MainActivity.class ) );
+                        finish();
                         break;
                     }
                     case "Invalid user": {

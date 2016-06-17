@@ -42,7 +42,7 @@ public class ConnectionServer
 				
 				if ( handler.AceptLoginMessage() )
 				{
-					
+					while( handler.ExecuteMessage() );
 				}
 				
 				
