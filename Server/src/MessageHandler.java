@@ -15,26 +15,26 @@ import org.json.JSONObject;
 
 public class MessageHandler
 {
-	private	BufferedReader		recived;
+	private	BufferedReader received;
 	private	PrintWriter			send;
 	private	DatabaseConnection	database;
 
 	public MessageHandler(Socket socket) throws IOException, SQLException
 	{
-		recived		= new BufferedReader( new InputStreamReader( socket.getInputStream(), "UTF-8" ) );
+		received = new BufferedReader( new InputStreamReader( socket.getInputStream(), "UTF-8" ) );
 		send		= new PrintWriter( new OutputStreamWriter( socket.getOutputStream(), "UTF-8" ) );
 		database	= new DatabaseConnection();		
 	}
 	
-	public boolean AceptLoginMessage()
+	public boolean AcceptLoginMessage()
 	{
 		boolean	success = false;
 		
 		try
 		{
-			JSONObject	creadentials	= new JSONObject( recived.readLine() );
-			String		username		= creadentials.getString( "UID" );
-			String		password		= creadentials.getString( "password" );
+			JSONObject	credentials	= new JSONObject( received.readLine() );
+			String		username		= credentials.getString( "UID" );
+			String		password		= credentials.getString( "password" );
 			
 			JSONObject	result			= new JSONObject();
 			if ( database.UserExists( username ) )
@@ -74,7 +74,7 @@ public class MessageHandler
 		Boolean	success = false;
 		try
 		{
-			String	textMessage	= recived.readLine();
+			String	textMessage	= received.readLine();
 			success	= (textMessage != null);
 			if ( success )
 			{
@@ -119,14 +119,6 @@ public class MessageHandler
 			result.put( entry.getKey(), entry.getValue() );
 		}
 	}
-
-//	private void DataMapToJSON2(Map<String, ?> map, JSONObject result) throws JSONException
-//	{
-//		for ( Entry<String, ?> entry : map.entrySet() )
-//		{
-//			result.put( entry.getKey(), entry.getValue() );
-//		}
-//	}
 
 	private void DataMapListToJSONArray(List<Map<String, String>> list, JSONArray result) throws JSONException
 	{

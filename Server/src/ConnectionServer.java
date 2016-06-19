@@ -40,7 +40,7 @@ public class ConnectionServer
 			{
 				handler	= new MessageHandler( connectionSocet );
 				
-				if ( handler.AceptLoginMessage() )
+				if ( handler.AcceptLoginMessage() )
 				{
 					while( handler.ExecuteMessage() );
 				}
