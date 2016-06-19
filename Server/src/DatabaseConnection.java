@@ -16,8 +16,9 @@ public class DatabaseConnection
 	
 	public	DatabaseConnection() throws SQLException
 	{
-		String url = "jdbc:mysql://localhost:3306/taskbo-rd";
-		sqlConnection = DriverManager.getConnection( url, "root", "" );
+//		String url = "jdbc:mysql://localhost:3306/taskbo-rd";
+		String url = "jdbc:mysql://192.168.0.200:3306/taskbo-rd";
+		sqlConnection = DriverManager.getConnection( url, "root", "raspy" );
 		userUID = "";
 	}
 	
@@ -56,14 +57,11 @@ public class DatabaseConnection
 					success = true;
 				}
 			}
-			
-			
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return success;
 	}
 	
@@ -77,9 +75,8 @@ public class DatabaseConnection
 			ResultSet result = getUserData.executeQuery();
 			if ( result.next() )
 			{
-				dataArray = this.ReultSetRowToMap( result );
+				dataArray = this.ResultSetRowToMap( result );
 			}
-			
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
@@ -91,7 +88,6 @@ public class DatabaseConnection
 	public	List< Map<String, String> >	GetUserGroups()
 	{
 		List< Map<String, String> > list = null;
-		
 		try
 		{
 			String	query	= "SELECT groupusers.groupUID, groups.name, groups.description FROM groupusers INNER JOIN groups ON groupusers.groupUID = groups.UID WHERE groupusers.userUID = '" + userUID + "'";
@@ -107,60 +103,78 @@ public class DatabaseConnection
 		
 		return list;
 	}
-	
+
 	public	List< Map<String, String> >	GetIssues(int groupUID)
 	{
 		List< Map<String, String> > list = null;
-		/*
 		try
 		{
-			String	query	= "SELECT groupusers.groupUID, groups.name, groups.description FROM groupusers INNER JOIN groups ON groupusers.groupUID = groups.UID WHERE groupusers.userUID = '" + userUID + "'";
-			PreparedStatement getUserData;
-			getUserData = sqlConnection.prepareStatement( query );
+			String	query	= "SELECT name, description, issueUID FROM issues WHERE groupUID = '" + groupUID + "'";
+			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
 			ResultSet result = getUserData.executeQuery();
 			list = ResultToMapList( result );
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-		list = new ArrayList<Map<String, String>>();
-		Map<String, String>	i1 = new HashMap<>();
-		Map<String, String> i2 = new HashMap<>();
-		Map<String, String> i3 = new HashMap<>();
-		i1.put("name", "alabala");i1.put("description", "kikiriki");i1.put( "issueUID", "123" );
-		i2.put("name", "asdasdadd");i2.put("description", "dxghvjbnk");i2.put( "issueUID", "77" );
-		i3.put("name", "kkjklkj");i3.put("description", "jhhgfgvbn");i3.put( "issueUID", "154" );
-
-		list.add( i1 );
-		list.add( i2 );
-		list.add( i3 );
-		
-		
+		}
 		return list;
 	}
-	
-	private Map<String, String> ReultSetRowToMap( ResultSet result ) throws SQLException
+
+	public Map<String, ?> 	GetIssueData(int issueUID) {
+		Map<String, ?> result = null;
+		try
+		{
+			String	query	= "SELECT name, description, issueUID FROM issues WHERE issueUID = '" + issueUID + "'";
+			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
+			ResultSet queryResult = getUserData.executeQuery();
+			queryResult.next();
+			result = ResultSetRowToMap( queryResult );
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		fillChecklist(result);
+		return result;
+	}
+
+	private void fillChecklist(Map result) {
+		List< Map<String, String> > list = null;
+		try
+		{
+			String	query	= "SELECT checkUID, name, isFinished FROM checks WHERE issueUID = '" + result.get("issueUID") + "'";
+			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
+			ResultSet queryResult = getUserData.executeQuery();
+			list = ResultToMapList( queryResult );
+			result.put("checkList", list);
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private Map<String, String> ResultSetRowToMap(ResultSet result) throws SQLException
 	{
-		Map<String, String> dataAray = new HashMap<String, String>();
+		Map<String, String> dataArray = new HashMap<String, String>();
 		ResultSetMetaData metadata = result.getMetaData();
 		int columns	= metadata.getColumnCount();
 		for ( int i = 1; i <= columns; i++ )
 		{
-			dataAray.put( metadata.getColumnName(i), result.getString(i) );
+			dataArray.put( metadata.getColumnName(i), result.getString(i) );
 		}
-		
-		return dataAray;
+
+		return dataArray;
 	}
-	
+
 	private	List< Map<String, String> > ResultToMapList( ResultSet result ) throws SQLException
 	{
 		ArrayList< Map<String, String> > list = new ArrayList< Map<String, String> >();
 		while ( result.next() )
 		{
-			list.add( this.ReultSetRowToMap( result ) );
+			list.add( this.ResultSetRowToMap( result ) );
 		}
-		
 		return list;
 	}
 }

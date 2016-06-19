@@ -79,18 +79,22 @@ public class MessageHandler
 			if ( success )
 			{
 				JSONObject	message	= new JSONObject( textMessage );
-				JSONArray	result	= new JSONArray();
+				Object	result	= null;
 				
 				switch ( message.getString( "key" ) )
 				{
 				case "getGroups":
-					DataMapListToJSONArray( database.GetUserGroups(), result );
+					result = new JSONArray();
+					DataMapListToJSONArray( database.GetUserGroups(), (JSONArray) result );
 					break;
 					
 				case "getIssues":
-					DataMapListToJSONArray( database.GetIssues( message.getInt( "UID" ) ), result );
+					result = new JSONArray();
+					DataMapListToJSONArray( database.GetIssues( message.getInt( "UID" ) ), (JSONArray) result );
 					break;
-
+				case "getIssueData":
+					result = new JSONObject();
+					DataMapToJSON(database.GetIssueData(message.getInt("issueUID")), (JSONObject) result);
 				default:
 					break;
 				} 
@@ -108,14 +112,22 @@ public class MessageHandler
 		return success;
 	}
 	
-	private void DataMapToJSON(Map<String, String> map, JSONObject result) throws JSONException
+	private void DataMapToJSON(Map<String, ?> map, JSONObject result) throws JSONException
 	{
-		for ( Entry<String, String> entry : map.entrySet() )
+		for ( Entry<String, ?> entry : map.entrySet() )
 		{
 			result.put( entry.getKey(), entry.getValue() );
 		}
 	}
-	
+
+//	private void DataMapToJSON2(Map<String, ?> map, JSONObject result) throws JSONException
+//	{
+//		for ( Entry<String, ?> entry : map.entrySet() )
+//		{
+//			result.put( entry.getKey(), entry.getValue() );
+//		}
+//	}
+
 	private void DataMapListToJSONArray(List<Map<String, String>> list, JSONArray result) throws JSONException
 	{
 		for ( Map<String, String> item : list )
