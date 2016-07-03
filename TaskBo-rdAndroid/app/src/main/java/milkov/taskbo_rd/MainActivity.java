@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            ConnectionManager.RequestGroupds();
+            ConnectionManager.RequestGroups();
             return true;
         }
 

@@ -1,9 +1,22 @@
 package milkov.taskbo_rd;
 
 public class IssueInfo {
-    private Integer issueUID;
-    private String  name;
-    private String  description;
+    protected int     issueUID;
+    protected int     groupUID;
+    protected String  name;
+    protected String  description;
+    protected boolean isResolved;
+
+    public IssueInfo() {
+    }
+
+    public IssueInfo( IssueInfo source ){
+        setIssueUID(source.getIssueUID());
+        setDescription(source.getDescription());
+        setName(source.getName());
+        setGroupUID(source.getGroupUID());
+        setResolved(source.isResolved());
+    }
 
     public String getName() {
         return name;
@@ -13,11 +26,11 @@ public class IssueInfo {
         this.name = name;
     }
 
-    public Integer getIssueUID() {
+    public int getIssueUID() {
         return issueUID;
     }
 
-    public void setIssueUID(Integer issueUID) {
+    public void setIssueUID(int issueUID) {
         this.issueUID = issueUID;
     }
 
@@ -27,5 +40,21 @@ public class IssueInfo {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getGroupUID() {
+        return groupUID;
+    }
+
+    public void setGroupUID(int groupUID) {
+        this.groupUID = groupUID;
+    }
+
+    public boolean isResolved() {
+        return isResolved;
+    }
+
+    public void setResolved(boolean resolved) {
+        isResolved = resolved;
     }
 }

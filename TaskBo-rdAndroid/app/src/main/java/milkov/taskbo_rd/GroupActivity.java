@@ -1,6 +1,7 @@
 package milkov.taskbo_rd;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,15 +10,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by Milkov on 17-Jun-16.
- */
 public class GroupActivity extends AppCompatActivity {
 
     int groupUID;
@@ -36,6 +35,25 @@ public class GroupActivity extends AppCompatActivity {
         else {
             new RequestIssuesTask(groupUID).execute();
         }
+
+        final ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Object item = listView.getItemAtPosition(position);
+                IssueInfo   issue   = (IssueInfo) item;
+
+                Intent intent = new Intent( GroupActivity.this, IssueActivity.class);
+                intent.putExtra( "groupUID", issue.getGroupUID() );
+                intent.putExtra( "position", position );
+                intent.putExtra( "editable", false );
+                startActivity(intent);
+            }
+
+
+        });
     }
 
     private void FillIssueListview()
@@ -55,7 +73,8 @@ public class GroupActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            return ConnectionManager.RequestIssuesByGroup(groupUID) != null;
+            ConnectionManager.RequestIssuesByGroup(groupUID);
+            return  true;
         }
 
         @Override

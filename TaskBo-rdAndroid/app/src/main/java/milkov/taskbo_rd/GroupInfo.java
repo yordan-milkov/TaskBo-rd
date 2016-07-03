@@ -1,10 +1,15 @@
 package milkov.taskbo_rd;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.jar.Pack200;
+
 public class GroupInfo
 {
     private String   name;
     private Integer  IDnumber;
     private String   description;
+    private List<UserInfo> users;
 
     public GroupInfo(){}
 
@@ -37,4 +42,14 @@ public class GroupInfo
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<UserInfo> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserInfo> users) {
+        this.users = users;
+    }
+
+
 }

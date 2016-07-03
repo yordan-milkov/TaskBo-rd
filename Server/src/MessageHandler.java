@@ -92,9 +92,37 @@ public class MessageHandler
 					result = new JSONArray();
 					DataMapListToJSONArray( database.GetIssues( message.getInt( "UID" ) ), (JSONArray) result );
 					break;
+					
 				case "getIssueData":
 					result = new JSONObject();
 					DataMapToJSON(database.GetIssueData(message.getInt("issueUID")), (JSONObject) result);
+					break;
+					
+				case "getGroupUsers":
+					result = new JSONArray();
+					DataMapListToJSONArray( database.GetUsersByGroup( message.getInt( "UID" ) ) , (JSONArray)result);
+					break;
+					
+				case "addCheck":
+					result = new JSONObject();
+					DataMapToJSON( database.AddCheckItem( message.getInt("issueUID"), message.getString( "name" ) ), (JSONObject) result );
+					break;
+					
+				case "updateCehckState":
+					boolean status = database.UpdateCheck( message.getInt( "checkUID" ), message.getBoolean( "state" ) );
+					result = new JSONObject().put("res", status );
+					break;
+					
+				case "addParticipant":
+					int stat = database.AddParticipant( message.getString( "name" ), message.getInt( "issueUID" ) );
+					result = new JSONObject().put( "res", stat );
+					break;
+					
+				case "updateIssueState":
+					boolean	areUOK  = database.UpdateIsssueStatus( message.getInt("issueUID"), message.getBoolean("state") );
+					result = new JSONObject().put( "res", areUOK );
+					break;
+					
 				default:
 					break;
 				} 
