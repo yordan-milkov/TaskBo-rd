@@ -40,7 +40,10 @@
             android:name=".GroupActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".IssueActivity"></activity>
+        <activity
+            android:name=".IssueActivity"
+            android:label="@string/title_activity_issue"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

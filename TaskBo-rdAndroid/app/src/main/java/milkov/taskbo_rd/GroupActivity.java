@@ -20,14 +20,21 @@ import java.util.List;
 public class GroupActivity extends AppCompatActivity {
 
     int groupUID;
+    GroupInfo   groupInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         groupUID = getIntent().getIntExtra("groupID", -1);
         setContentView(R.layout.activity_main);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+
+        for( GroupInfo info : UserData.groupsList  )
+        {
+            if ( info.getIDnumber() == groupUID )
+            {
+                groupInfo = info;
+            }
+        }
 
         if ( UserData.issuesMap.containsKey( groupUID ) ) {
             FillIssueListview();
@@ -58,6 +65,10 @@ public class GroupActivity extends AppCompatActivity {
 
     private void FillIssueListview()
     {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+      /*  setSupportActionBar(toolbar);*/
+        toolbar.setTitle( groupInfo.getName() );
+
         ListView listView = (ListView) findViewById(R.id.listView);
         ListItemAdapter adapter = new ListItemAdapter(GroupActivity.this, UserData.issuesMap.get( groupUID ));
         listView.setAdapter(adapter);

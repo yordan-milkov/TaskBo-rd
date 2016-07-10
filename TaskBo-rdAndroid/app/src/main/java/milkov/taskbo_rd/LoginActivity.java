@@ -357,7 +357,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            mStatus = ConnectionManager.SetupConnection(mEmail, mPassword);
+             mStatus = ConnectionManager.SetupConnection(mEmail, mPassword);
 
             // TODO: register the new account here.
             return true;

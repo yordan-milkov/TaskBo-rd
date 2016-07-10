@@ -34,6 +34,11 @@ public class ConnectionManager {
             InetAddress server  = InetAddress.getByName( "192.168.0.201" );
             //InetAddress server  = InetAddress.getLocalHost();
 
+            if ( socket != null && user.equals( UserData.userInfo.getUserName() ) )
+            {
+                return "OK";
+            }
+
             socket = new Socket(server, 4444);
             recived	= new BufferedReader( new InputStreamReader( socket.getInputStream(), "UTF-8" ) );
             sent	= new PrintWriter( new OutputStreamWriter( socket.getOutputStream(), "UTF-8" ) );
@@ -291,7 +296,8 @@ public class ConnectionManager {
 
             JSONObject recivedData = new JSONObject(recived.readLine());
             result = recivedData.getBoolean("res");
-        } catch (JSONException | IOException e) {
+        }
+        catch (JSONException | IOException e) {
         }
         return result;
     }

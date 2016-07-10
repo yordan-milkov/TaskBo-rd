@@ -16,4 +16,5 @@
     <string name="title_home_detail">Home Detail</string>
     <string name="title_activity_main">Mai Activity</string>
     <string name="resolve">Resolve</string>
+    <string name="title_activity_issue">IssueActivity</string>
 </resources>
