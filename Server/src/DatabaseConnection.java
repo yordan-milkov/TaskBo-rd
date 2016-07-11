@@ -1,5 +1,3 @@
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +11,9 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.mysql.jdbc.Statement;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DatabaseConnection
 {
@@ -145,18 +146,18 @@ public class DatabaseConnection
 		return list;
 	}
 
-	public Map<String, ?> 	GetIssueData(int issueUID) {
+	public Map<String, ?> GetIssueData(int issueUID) {
 		Map<String, ?> result = null;
 		try
 		{
-			String	query	= "SELECT name, description, issueUID FROM issues WHERE issueUID = '" + issueUID + "'";
+			String	query	= "SELECT name, description, issueUID, users FROM issues WHERE issueUID = '" + issueUID + "'";
 			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
 			ResultSet queryResult = getUserData.executeQuery();
 			queryResult.next();
 			result = ResultSetRowToMap( queryResult );
-			
-			fillChecklist(result);
-			fillParticipantsList(result);
+
+			getChecklist(result);
+			getParticipantsList(result);
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
@@ -165,50 +166,59 @@ public class DatabaseConnection
 		return result;
 	}
 
-	private void fillChecklist(Map result) {
+	public Map<String, Boolean> UpdateIssueData(JSONObject issueData) throws JSONException {
+		Map resultMap = new HashMap();
+		boolean	result = false;
 		try
 		{
-			String	query	= "SELECT checkUID, name, isFinished FROM checks WHERE issueUID = '" + result.get("issueUID") + "'";
-			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
-			ResultSet queryResult = getUserData.executeQuery();
-			List< Map<String, String> > list = ResultToMapList( queryResult );
-			result.put("checkList", list);
-		} catch (SQLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private void fillParticipantsList(Map result) {
-		try
-		{
-			String	query	= "SELECT users FROM issues WHERE issueUID = '" + result.get("issueUID") + "'";
-			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
-			ResultSet queryResult = getUserData.executeQuery();
-			queryResult.next();
-			StringTokenizer	userTokens	= new StringTokenizer( queryResult.getString(1), "," );
-			List<String> usersList = new ArrayList<>();
-			while( userTokens.hasMoreTokens() )
-			{
-				usersList.add( userTokens.nextToken() );
+			String users = updateParticipantsList(issueData.getJSONArray("users"));
+			String query = "UPDATE issues SET name = '" + issueData.getString("name") + "', description = '"+issueData.getString("description") +"', users = '"+users+"' WHERE issueUID = " + issueData.getInt("issueUID");
+			PreparedStatement updateIssue = sqlConnection.prepareStatement( query );
+			int affectedRows = updateIssue.executeUpdate();
+			if (affectedRows != 0) {
+				updateCheckList(issueData.getInt("issueUID"), issueData.getJSONArray("checks"));
+				result = true;
 			}
-			result.put( "userList", usersList );
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-		
+		resultMap.put("result", result);
+		return resultMap;
 	}
-	
+
+	public Map<String, ?> CreateIssueData(JSONObject issueData) throws JSONException {
+		Map resultMap = new HashMap();
+		boolean	result = false;
+		try
+		{
+			String users = updateParticipantsList(issueData.getJSONArray("users"));
+
+			String query ="INSERT INTO issues (name, description, users, groupUID)"
+					+ "VALUES ('" + issueData.getString("name") + "', '" + issueData.get("description") + "','" + users + "', '"+issueData.getString("groupUID")+"')";
+
+			PreparedStatement updateIssue = sqlConnection.prepareStatement( query );
+			int affectedRows = updateIssue.executeUpdate();
+			if (affectedRows != 0) {
+				result = true;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		resultMap.put("result", result);
+		return resultMap;
+	}
+
 	public Map<String, String> AddCheckItem(int issueID, String name)
 	{
 		Map<String, String> dataArray = null;
 		try
 		{
 			String	query	= "INSERT INTO checks (issueUID, name, isFinished, checkUID)"
-							+ "VALUES ('" + issueID + "', '" + name + "', '0', NULL);";
+					+ "VALUES ('" + issueID + "', '" + name + "', '0', NULL);";
 			PreparedStatement addCheck = sqlConnection.prepareStatement( query, Statement.RETURN_GENERATED_KEYS );
 			addCheck.executeUpdate();
 			ResultSet	keys	= addCheck.getGeneratedKeys();
@@ -223,7 +233,85 @@ public class DatabaseConnection
 		}
 		return dataArray;
 	}
-	
+
+	private void updateCheckList(int issueUID, JSONArray checks) {
+		try {
+			String query = "SELECT checkUID FROM checks WHERE issueUID = '" + issueUID + "'";
+			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
+			ResultSet queryResult = getUserData.executeQuery();
+			List< Map<String, String> > checkUIDsMapList = ResultToMapList( queryResult );
+			Map<Integer, JSONObject> checksMapping = toChecksMapping(checks);
+			for (Map<String, String> checkUIDMap : checkUIDsMapList) {
+				PreparedStatement updateCheck;
+				int checkUID = Integer.valueOf(checkUIDMap.get("checkUID"));
+				JSONObject issueData = checksMapping.get(checkUID);
+				if (issueData != null) {
+					query = "UPDATE checks SET name = '" + issueData.getString("name") + "' WHERE checkUID = " + checkUID;
+				} else {
+					query = "DELETE FROM checks WHERE checkUID = "+checkUID;
+				}
+				updateCheck = sqlConnection.prepareStatement(query);
+				updateCheck.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void getChecklist(Map result) {
+		try
+		{
+			String	query	= "SELECT checkUID, name, isFinished FROM checks WHERE issueUID = '" + result.get("issueUID") + "'";
+			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
+			ResultSet queryResult = getUserData.executeQuery();
+			List< Map<String, String> > list = ResultToMapList( queryResult );
+			result.put("checks", list);
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+
+	private Map<Integer, JSONObject> toChecksMapping(JSONArray jsonArray) {
+		Map mapping = new HashMap();
+		if (jsonArray != null) {
+			int len = jsonArray.length();
+			for (int i=0;i<len;i++){
+				try {
+					JSONObject jsonCheck = (JSONObject)jsonArray.get(i);
+					mapping.put(jsonCheck.getInt("checkUID"), jsonCheck);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return mapping;
+	}
+
+	private String updateParticipantsList(JSONArray participants) throws JSONException {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (int i = 0; i < participants.length(); i++) {
+			String participant = (String ) participants.get(i);
+			stringBuilder.append(participant);
+			stringBuilder.append(",");
+		}
+		return stringBuilder.toString();
+	}
+
+	private void getParticipantsList(Map result) {
+		String users = (String) result.get("users");
+		StringTokenizer	userTokens	= new StringTokenizer( users, "," );
+		List<String> usersList = new ArrayList<>();
+		while( userTokens.hasMoreTokens() )
+		{
+			usersList.add( userTokens.nextToken() );
+		}
+		result.put( "users", usersList );
+	}
+
 	public boolean UpdateCheck(int checkUID, boolean state)
 	{
 		boolean	result = false;
@@ -238,44 +326,11 @@ public class DatabaseConnection
 		{
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
-	
-	public int AddParticipant(String userUID, int issueUID)
-	{
-		int	result = 0;
-		try
-		{
-			String	query	= "SELECT users FROM issues WHERE issueUID = '" + issueUID + "'";
-			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
-			ResultSet queryResult = getUserData.executeQuery();
-			queryResult.next();
-			StringTokenizer	userTokens	= new StringTokenizer( queryResult.getString(1), "," );
-			while( userTokens.hasMoreTokens() )
-			{
-				if ( userUID.equals( userTokens.nextToken() ) )
-				{
-					result = 1;
-					break;
-				}
-			}
-			
-			if ( result == 0 )
-			{
-				String	queryUpdate	= "UPDATE issues SET users = CONCAT(users, '," + userUID + "') WHERE issueUID = " + issueUID;
-				PreparedStatement updateCheck = sqlConnection.prepareStatement( queryUpdate );
-				updateCheck.executeUpdate();
-				result = 2;
-			}
-		}
-		catch(SQLException e)
-		{
-			
-		}
-		return result;
-	}
-	
+
+
 	public boolean UpdateIsssueStatus( int issueUID, boolean status )
 	{
 		boolean	result = false;
@@ -290,7 +345,7 @@ public class DatabaseConnection
 		{
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 
