@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -55,12 +57,27 @@ public class GroupActivity extends AppCompatActivity {
                 Intent intent = new Intent( GroupActivity.this, IssueActivity.class);
                 intent.putExtra( "groupUID", issue.getGroupUID() );
                 intent.putExtra( "position", position );
-                intent.putExtra( "editable", false );
-                startActivity(intent);
+                startActivityForResult(intent, 5);
             }
 
 
         });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent( GroupActivity.this, EditIssueActivity.class);
+                intent.putExtra("groupUID", groupUID );
+                startActivityForResult(intent, 6);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        FillIssueListview();
     }
 
     private void FillIssueListview()

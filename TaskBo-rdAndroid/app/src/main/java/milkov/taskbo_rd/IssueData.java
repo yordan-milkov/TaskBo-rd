@@ -12,6 +12,10 @@ public class IssueData extends IssueInfo {
         super(info);
     }
 
+    public IssueData() {
+        super( new IssueInfo() );
+    }
+
     public void AddCheck(CheckItem item)
     {
         checkItemList.add(item);
@@ -30,4 +34,11 @@ public class IssueData extends IssueInfo {
         return participantsList;
     }
 
+    public void setParticipantsList(List<UserInfo> participantsList) {
+        this.participantsList = participantsList;
+    }
+
+    public void setCheckItemList(List<CheckItem> checkItemList) {
+        this.checkItemList = checkItemList;
+    }
 }

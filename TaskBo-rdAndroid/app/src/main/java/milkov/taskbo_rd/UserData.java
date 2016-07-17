@@ -13,4 +13,5 @@ public class UserData {
     public static String    GSM;
     public static List<GroupInfo> groupsList  = new ArrayList<>();
     public static Map<Integer, ArrayList<IssueInfo>> issuesMap   = new HashMap();
+    public static IssueData issueForEdit;
 }

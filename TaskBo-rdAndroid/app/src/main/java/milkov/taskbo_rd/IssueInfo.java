@@ -1,8 +1,8 @@
 package milkov.taskbo_rd;
 
 public class IssueInfo {
-    protected int     issueUID;
-    protected int     groupUID;
+    protected int     issueUID = -1;
+    protected int     groupUID = -1;
     protected String  name;
     protected String  description;
     protected boolean isResolved;

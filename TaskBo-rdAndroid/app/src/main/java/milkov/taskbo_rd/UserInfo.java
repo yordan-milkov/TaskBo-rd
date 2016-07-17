@@ -4,6 +4,7 @@ package milkov.taskbo_rd;
 public class UserInfo {
     protected String    userName;
     protected String    displayName;
+    public    boolean   isForDelete;
 
     public String getUserName() {
         return userName;

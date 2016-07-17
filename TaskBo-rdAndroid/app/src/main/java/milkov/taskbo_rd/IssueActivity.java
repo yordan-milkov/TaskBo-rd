@@ -7,8 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -24,16 +27,14 @@ import java.util.List;
 public class IssueActivity extends AppCompatActivity {
 
     private IssueData   data;
-    private boolean     isEdistable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_issue);
 
         Intent  intent = getIntent();
-        isEdistable = intent.getBooleanExtra( "editable", false );
-
         List<IssueInfo> infoList = UserData.issuesMap.get(intent.getIntExtra("groupUID", -1));
         new RequestIssuesTask( infoList.get(intent.getIntExtra("position", -1) ) ).execute();
 
@@ -52,37 +53,37 @@ public class IssueActivity extends AppCompatActivity {
         });
 
         Button  addParticipant = (Button) findViewById(R.id.buttonNewParticipant);
-        addParticipant.setOnClickListener( new View.OnClickListener() {
+        addParticipant.setVisibility( View.GONE );
 
-            public void onClick(View v) {
-                AutoCompleteTextView participantText = (AutoCompleteTextView) findViewById(R.id.autoCompleteUser);
-                String      name        = participantText.getText().toString();
-                UserInfo    foundUser   = null;
-                if ( name.length() > 3 ) {
-                    for (GroupInfo curr : UserData.groupsList) {
-                        if (curr.getIDnumber() == data.getGroupUID()) {
-                            for (UserInfo userInf : curr.getUsers()) {
-                                if (name.equals(userInf.getUserName()) || name.equals(userInf.getDisplayName())) {
-                                    foundUser = userInf;
-                                }
-                            }
-                            break;
-                        }
-                    }
-                }
-
-                if ( foundUser != null ) {
-                    participantText.setText("");
-                    new AddParticipantTask( foundUser ).execute();
-                }
-                else
-                {
-                    participantText.setError("Не съществува такъв потребител");
-                }
-            }
-        } );
+        AutoCompleteTextView participantText = (AutoCompleteTextView) findViewById(R.id.autoCompleteUser);
+        participantText.setVisibility( View.GONE );
 
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        UserData.issueForEdit   = data;
+        Intent intent = new Intent( IssueActivity.this, EditIssueActivity.class);
+        intent.putExtra( "issueUID", data.getIssueUID() );
+        startActivityForResult(intent, 8);
+
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        FillIssueData();
+    }
+
+  //  public void onComposeAction(MenuItem mi) {
+       // isEdistable = ! isEdistable;
+  //  }
 
     protected void  SetResovlveButtonText()
     {
@@ -98,13 +99,22 @@ public class IssueActivity extends AppCompatActivity {
 
     protected void  FillIssueData()
     {
+        for ( GroupInfo curr :  UserData.groupsList ) {
+            if (curr.getIDnumber() == data.getGroupUID()) {
+
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarIssue);
+                setSupportActionBar(toolbar);
+                toolbar.setTitle(curr.getName());
+            }
+        }
+
         EditText isssueName = (EditText) findViewById(R.id.editIssueName);
         isssueName.setText( data.getName() );
-        isssueName.setEnabled( isEdistable );
+        isssueName.setEnabled( false );
 
         EditText isssueDescription = (EditText) findViewById(R.id.editDescription);
         isssueDescription.setText( data.getDescription() );
-        isssueDescription.setEnabled( isEdistable );
+        isssueDescription.setEnabled( false );
 
         SetResovlveButtonText();
         Button  resolveButton = (Button)findViewById(R.id.buttonResolve);
@@ -125,29 +135,9 @@ public class IssueActivity extends AppCompatActivity {
         ParticipantListItemAdapter adaptParticip = new ParticipantListItemAdapter( IssueActivity.this, data.getParticipantsList() );
         participansListView.setAdapter( adaptParticip );
         SetListViewHeightBasedOnChildren( participansListView );
-
-        List<String>  groupUsers = new ArrayList<>();
-        for ( GroupInfo curr :  UserData.groupsList ) {
-            if (curr.getIDnumber() == data.getGroupUID()) {
-
-                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarIssue);
-//        setSupportActionBar(toolbar);
-                toolbar.setTitle(curr.getName());
-
-                for ( UserInfo userInf : curr.getUsers() )
-                {
-                    groupUsers.add( userInf.getUserName() );
-                    groupUsers.add( userInf.getDisplayName() );
-                }
-                break;
-            }
-        }
-        AutoCompleteTextView participantText = (AutoCompleteTextView) findViewById(R.id.autoCompleteUser);
-        ArrayAdapter<String> textAdapter = new ArrayAdapter<String>( IssueActivity.this, android.R.layout.simple_dropdown_item_1line, groupUsers );
-        participantText.setAdapter( textAdapter );
     }
 
-    private static void SetListViewHeightBasedOnChildren(ListView listView) {
+    public static void SetListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
 
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
@@ -288,7 +278,7 @@ public class IssueActivity extends AppCompatActivity {
 
     }
 
-    public class AddParticipantTask extends AsyncTask<Void, Void, Boolean> {
+  /*  public class AddParticipantTask extends AsyncTask<Void, Void, Boolean> {
 
         private UserInfo userInfo;
         private int result;
@@ -307,26 +297,9 @@ public class IssueActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if ( aBoolean ) {
-                ListView participansListView = (ListView) findViewById(R.id.listParticipants);
-                ParticipantListItemAdapter adaptParticip = (ParticipantListItemAdapter) participansListView.getAdapter();
-                adaptParticip.add( userInfo );
-                SetListViewHeightBasedOnChildren(participansListView);
-            }
-            else
-            {
-                AutoCompleteTextView participantText = (AutoCompleteTextView) findViewById(R.id.autoCompleteUser);
-                if ( result == 1 )
-                {
-                    participantText.setError("Потребителят вече е добавен.");
-                }
-                else if ( result == 0 )
-                {
-                    participantText.setError("Възникна неочаквана грешка.");
-                }
-            }
+
         }
-    }
+    }*/
 
     public class UpdateIssueStateTask extends AsyncTask<Void, Void, Boolean> {
 

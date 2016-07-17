@@ -198,9 +198,12 @@ public class DatabaseConnection
 			String query ="INSERT INTO issues (name, description, users, groupUID)"
 					+ "VALUES ('" + issueData.getString("name") + "', '" + issueData.get("description") + "','" + users + "', '"+issueData.getString("groupUID")+"')";
 
-			PreparedStatement updateIssue = sqlConnection.prepareStatement( query );
-			int affectedRows = updateIssue.executeUpdate();
-			if (affectedRows != 0) {
+			PreparedStatement updateIssue = sqlConnection.prepareStatement( query, Statement.RETURN_GENERATED_KEYS );
+			updateIssue.executeUpdate();
+			ResultSet	keys	= updateIssue.getGeneratedKeys();
+			if ( keys.next() )
+			{
+				resultMap = ResultSetRowToMap( keys );
 				result = true;
 			}
 		}
@@ -239,8 +242,10 @@ public class DatabaseConnection
 			String query = "SELECT checkUID FROM checks WHERE issueUID = '" + issueUID + "'";
 			PreparedStatement getUserData = sqlConnection.prepareStatement( query );
 			ResultSet queryResult = getUserData.executeQuery();
+			
 			List< Map<String, String> > checkUIDsMapList = ResultToMapList( queryResult );
 			Map<Integer, JSONObject> checksMapping = toChecksMapping(checks);
+			
 			for (Map<String, String> checkUIDMap : checkUIDsMapList) {
 				PreparedStatement updateCheck;
 				int checkUID = Integer.valueOf(checkUIDMap.get("checkUID"));
@@ -295,8 +300,8 @@ public class DatabaseConnection
 		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = 0; i < participants.length(); i++) {
 			String participant = (String ) participants.get(i);
-			stringBuilder.append(participant);
 			stringBuilder.append(",");
+			stringBuilder.append(participant);
 		}
 		return stringBuilder.toString();
 	}

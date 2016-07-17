@@ -179,7 +179,7 @@ public class ConnectionManager {
 
             JSONObject recivedData  = new JSONObject( recived.readLine() );
             result  = new IssueData(info);
-            JSONArray checkList = recivedData.getJSONArray("checkList");
+            JSONArray checkList = recivedData.getJSONArray("checks");
             for ( int i = 0; i < checkList.length(); i++ )
             {
                 JSONObject  itemObject  = checkList.getJSONObject( i );
@@ -200,7 +200,7 @@ public class ConnectionManager {
                 }
             }
 
-            JSONArray userList  = recivedData.getJSONArray("userList");
+            JSONArray userList  = recivedData.getJSONArray("users");
             for ( int i = 0; i < userList.length(); i++ )
             {
                 String   userUID = userList.getString(i);
@@ -249,7 +249,7 @@ public class ConnectionManager {
         try {
             JSONObject updateCheck = new JSONObject();
 
-            updateCheck.put("key", "updateCehckState");
+            updateCheck.put("key", "updateCheckState");
             updateCheck.put("checkUID", checkUID);
             updateCheck.put("state", state);
             sent.println(updateCheck.toString());
@@ -262,7 +262,7 @@ public class ConnectionManager {
         return result;
     }
 
-    public static int AddParticipantData(String name, int issueUID)
+ /*   public static int AddParticipantData(String name, int issueUID)
     {
         int result = 0;
         try {
@@ -280,7 +280,7 @@ public class ConnectionManager {
         {
         }
         return result;
-    }
+    }*/
 
     public static boolean UpdateIssueStatus(int issueUID, boolean status)
     {
@@ -296,6 +296,58 @@ public class ConnectionManager {
 
             JSONObject recivedData = new JSONObject(recived.readLine());
             result = recivedData.getBoolean("res");
+        }
+        catch (JSONException | IOException e) {
+        }
+        return result;
+    }
+
+    public static boolean UpdateIsseData(IssueData issue)
+    {
+        boolean result = false;
+        try {
+            JSONObject updateMessage = new JSONObject();
+            JSONObject issueData = new JSONObject();
+            if ( issue.getIssueUID() != -1 ) {
+                updateMessage.put("key", "updateIssueData");
+            }
+            else
+            {
+                updateMessage.put("key", "createIssueData");
+                issueData.put("groupUID", String.valueOf( issue.getGroupUID()) );
+            }
+
+            issueData.put( "name", issue.getName() );
+            issueData.put( "description", issue.getDescription() );
+            issueData.put( "issueUID", issue.getIssueUID() );
+
+            JSONArray usersList = new JSONArray();
+            for( UserInfo curr : issue.getParticipantsList() )
+            {
+                usersList.put( curr.getUserName() );
+            }
+            issueData.put( "users", usersList );
+
+            JSONArray checkList = new JSONArray();
+            for( CheckItem curr : issue.getCheckItemList() )
+            {
+                JSONObject  item = new JSONObject();
+                item.put( "checkUID", curr.chekcID );
+                item.put( "name", curr.description );
+                checkList.put( item );
+            }
+            issueData.put( "checks", checkList );
+
+            updateMessage.put( "issueData", issueData );
+            sent.println(updateMessage.toString());
+            sent.flush();
+
+            JSONObject recivedData = new JSONObject(recived.readLine());
+            result = recivedData.getBoolean("result");
+            if ( result == true && issue.getIssueUID() == -1 ) {
+                issue.setIssueUID( recivedData.getInt( "GENERATED_KEY" ) );
+            }
+
         }
         catch (JSONException | IOException e) {
         }
