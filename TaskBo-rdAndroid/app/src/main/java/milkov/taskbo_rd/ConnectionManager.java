@@ -31,7 +31,7 @@ public class ConnectionManager {
     {
         String      resolution  = "fail";
         try {
-            InetAddress server  = InetAddress.getByName( "192.168.0.201" );
+            InetAddress server  = InetAddress.getByName( "192.168.0.200" );
             //InetAddress server  = InetAddress.getLocalHost();
 
             if ( socket != null && user.equals( UserData.userInfo.getUserName() ) )

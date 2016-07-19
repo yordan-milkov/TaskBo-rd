@@ -17,5 +17,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/high"
+        android:stackFromBottom="false" />
 </RelativeLayout>

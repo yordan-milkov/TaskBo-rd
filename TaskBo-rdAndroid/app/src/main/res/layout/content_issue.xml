@@ -10,7 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="milkov.taskbo_rd.IssueActivity"
-    tools:showIn="@layout/activity_issue">
+    tools:showIn="@layout/activity_issue"
+    android:background="@drawable/high2">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -43,21 +44,25 @@
 
                 <EditText
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="42dp"
                     android:id="@+id/editIssueName"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentStart="true"
                     android:text="Issue name"
-                    android:layout_weight="0.99" />
+                    android:autoText="true"
+                    android:background="#96ffffff"
+                    android:layout_weight="1.02" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Затвори"
+                    android:layout_width="70dp"
+                    android:layout_height="56dp"
+                    android:text="X"
                     android:id="@+id/buttonResolve"
                     android:layout_above="@+id/textDescription"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="0"
+                    android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult" />
             </LinearLayout>
 
             <TextView
@@ -67,47 +72,50 @@
                 android:text="Описание:"
                 android:id="@+id/textDescription"
                 android:layout_below="@+id/editIssueName"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:textColor="#FF505050" />
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:ems="10"
+                android:layout_height="42dp"
                 android:id="@+id/editDescription"
-                android:layout_below="@+id/textDescription"
-                android:layout_alignParentStart="true" />
+                android:background="#96ffffff" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Списък:"
-                android:id="@+id/textChecklist" />
+                android:id="@+id/textChecklist"
+                android:textColor="#505050" />
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="89dp"
+                android:layout_height="68dp"
                 android:id="@+id/listChecks"
-                tools:listitem="@android:layout/simple_expandable_list_item_1" />
+                tools:listitem="@android:layout/simple_expandable_list_item_1"
+                android:background="#96ffffff" />
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right">
+                android:layout_gravity="right"
+                android:weightSum="1">
 
                 <EditText
-                    android:layout_width="273dp"
+                    android:layout_width="204dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editNewCheck" />
+                    android:id="@+id/editNewCheck"
+                    android:layout_weight="1.02" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="48dp"
-                    android:layout_height="29dp"
-                    android:text="Добави елемент"
-                    android:id="@+id/buttonNewCheck" />
+                    android:layout_width="70dp"
+                    android:layout_height="56dp"
+                    android:text="+"
+                    android:id="@+id/buttonNewCheck"
+                    android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult" />
             </LinearLayout>
 
             <TextView
@@ -115,13 +123,15 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Изпълнители:"
-                android:id="@+id/textParticipants" />
+                android:id="@+id/textParticipants"
+                android:textColor="#FF505050" />
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="74dp"
+                android:layout_height="98dp"
                 android:id="@+id/listParticipants"
-                tools:listitem="@android:layout/simple_list_item_1" />
+                tools:listitem="@android:layout/simple_list_item_1"
+                android:background="#96ffffff" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -130,17 +140,19 @@
 
                 <AutoCompleteTextView
                     android:layout_width="266dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="34dp"
                     android:id="@+id/autoCompleteUser"
                     android:layout_alignParentBottom="true"
                     android:layout_alignEnd="@+id/editIssueName" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="69dp"
-                    android:layout_height="33dp"
-                    android:text="Добави изпълнител"
-                    android:id="@+id/buttonNewParticipant" />
+                    android:layout_width="70dp"
+                    android:layout_height="56dp"
+                    android:text="+"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonNewParticipant"
+                    android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult" />
 
             </LinearLayout>
 

@@ -8,6 +8,8 @@
         android:layout_height="wrap_content"
         android:text="CheckBpoxItem"
         android:id="@+id/checkBox"
-        android:checked="false" />
+        android:checked="true"
+        android:buttonTint="#ffaa00"
+        android:textColor="#505050" />
 
 </LinearLayout>
