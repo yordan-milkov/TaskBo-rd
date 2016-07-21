@@ -22,9 +22,9 @@ public class DatabaseConnection
 	
 	public	DatabaseConnection() throws SQLException
 	{
-				String url = "jdbc:mysql://localhost:3306/taskbo-rd?characterEncoding=UTF-8";
+		String url = "jdbc:mysql://localhost:3306/taskbo-rd?characterEncoding=UTF-8";
 //		String url = "jdbc:mysql://192.168.0.200:3306/taskbo-rd?characterEncoding=UTF-8";
-		sqlConnection = DriverManager.getConnection( url, "root", "raspy" );
+		sqlConnection = DriverManager.getConnection( url, "root", "" );
 		userUID = "";
 	}
 	

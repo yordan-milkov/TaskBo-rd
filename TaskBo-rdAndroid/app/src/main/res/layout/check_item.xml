@@ -8,8 +8,20 @@
         android:layout_height="wrap_content"
         android:text="CheckBpoxItem"
         android:id="@+id/checkBox"
-        android:checked="true"
+        android:checked="false"
         android:buttonTint="#ffaa00"
+        android:button="@drawable/checkboxmy"
+        android:background="@color/colorOrig"
         android:textColor="#505050" />
+
+    <!--<CheckBox android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="CheckBpoxItem"-->
+        <!--android:id="@+id/checkBox"-->
+        <!--android:checked="true"-->
+        <!--android:background="@drawable/checkboxMy"-->
+        <!--android:button="@drawable/checkbox"-->
+        <!--android:buttonTint="#ffaa00"-->
+        <!--android:textColor="#505050"/>-->
 
 </LinearLayout>

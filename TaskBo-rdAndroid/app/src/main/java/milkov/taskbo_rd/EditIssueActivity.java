@@ -60,12 +60,18 @@ public class EditIssueActivity extends AppCompatActivity {
         isssueDescription.setText( data.getDescription() );
 
         TextView textList = (TextView) findViewById(R.id.textChecklist);
-        textList.setText( "Редактиране и изтриване от списъка:" );
 
-        ListView checkListView = (ListView) findViewById(R.id.listChecks);
-        CheckListItemAdapter adaptCehcks = new CheckListItemAdapter(EditIssueActivity.this, data.getCheckItemList());
-        checkListView.setAdapter(adaptCehcks);
-        IssueActivity.SetListViewHeightBasedOnChildren(checkListView);
+        if ( data.getCheckItemList().isEmpty() )
+        {
+            textList.setVisibility( View.GONE );
+        }
+        else {
+            textList.setText( "Редактиране и изтриване от списъка:" );
+            ListView checkListView = (ListView) findViewById(R.id.listChecks);
+            CheckListItemAdapter adaptCehcks = new CheckListItemAdapter(EditIssueActivity.this, data.getCheckItemList());
+            checkListView.setAdapter(adaptCehcks);
+            IssueActivity.SetListViewHeightBasedOnChildren(checkListView);
+        }
 
         Button  addCheck = (Button) findViewById(R.id.buttonNewCheck);
         addCheck.setVisibility( View.GONE );
