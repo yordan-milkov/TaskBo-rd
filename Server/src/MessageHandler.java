@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -13,26 +15,86 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.xml.bind.DatatypeConverter;
+
 public class MessageHandler
 {
-	private	BufferedReader received;
+	private	BufferedReader		received;
 	private	PrintWriter			send;
 	private	DatabaseConnection	database;
+	private Socket              socket;
 
-	public MessageHandler(Socket socket) throws IOException, SQLException
+	public MessageHandler(Socket inSocket) throws IOException, SQLException
 	{
-		received = new BufferedReader( new InputStreamReader( socket.getInputStream(), "UTF-8" ) );
+		socket      = inSocket;
+		received    = new BufferedReader( new InputStreamReader( socket.getInputStream(), "UTF-8" ) );
 		send		= new PrintWriter( new OutputStreamWriter( socket.getOutputStream(), "UTF-8" ) );
-		database	= new DatabaseConnection();		
+		database	= new DatabaseConnection();
+
+		this.InitSocketCnnection();
 	}
-	
+
+	private void InitSocketCnnection() throws IOException
+    {
+        boolean success = false;
+        String initMessage  = received.readLine();
+        if( ! initMessage.equals( "I'm mobi.e application Task Bo-rd" ) )
+        {
+            do
+            {
+                if ( initMessage.contains( "Sec-WebSocket-Key" ) )
+                {
+                    String msgKey = initMessage.substring( initMessage.indexOf(':') + 2 );
+                    String response = new String();
+                    try
+                    {
+						response	= ("HTTP/1.1 101 Switching Protocols\r\n"
+                                	+ "Connection: Upgrade\r\n"
+                                	+ "Upgrade: websocket\r\n"
+                                	+ "Sec-WebSocket-Accept: "
+                                	+ DatatypeConverter.printBase64Binary(
+                                	        MessageDigest.getInstance("SHA-1").digest(
+                                	                (msgKey + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").getBytes("UTF-8")))
+                                	+ "\r\n\r\n");
+                    } catch (NoSuchAlgorithmException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    send.write( response );
+                    send.flush();
+                    success = true;
+                }
+                initMessage = received.readLine();
+            }
+            while ( ! initMessage.equals( "" ) );
+        }
+        if ( !success )
+        {
+            throw new IOException();
+        }
+    }
+
 	public boolean AcceptLoginMessage()
 	{
 		boolean	success = false;
-		
+
+
 		try
 		{
-			JSONObject	credentials	= new JSONObject( received.readLine() );
+			JSONObject	credentials = null;
+			while( credentials == null  )
+            {
+				try {
+                    String	receivedJSON = received.readLine();
+					if ( receivedJSON == null )
+					{
+						return success;
+					}
+					credentials = new JSONObject(receivedJSON);
+				}
+				catch (JSONException|IOException e){}
+			}
 			String		username		= credentials.getString( "UID" );
 			String		password		= credentials.getString( "password" );
 			
@@ -59,7 +121,7 @@ public class MessageHandler
 			send.println( result.toString() );
 			send.flush();			
 			
-		} catch (JSONException | IOException e)
+		} catch (JSONException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
