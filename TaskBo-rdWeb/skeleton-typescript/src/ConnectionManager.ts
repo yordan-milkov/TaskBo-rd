@@ -1,10 +1,6 @@
-//import { io } from 'socket.io';
-// var socket = io.connect( 'http://localhost:3000' );
-
 export class DataService
 {
     private socket: WebSocket;
-    private connected: boolean;
 
     constructor() { }
 
@@ -19,9 +15,9 @@ export class DataService
     connect(): void
     {
         this.socket = new WebSocket("ws://localhost:4444");
+        this.socket.binaryType  = 'arraybuffer';
         this.socket.onopen = event =>
         {
-            this.connected = true;
             console.log('websocket connected')
             this.loginUser();
             // this.eventAggregator.subscribe(WebsocketClient.USERS_EVENT, users => {
@@ -30,30 +26,25 @@ export class DataService
             // this.eventAggregator.publish(WebsocketClient.CONNECTED_EVENT, this.socket);
             // resolve(this);
         };
-        this.socket.onclose = event =>
-        {
-            console.log('ebi sa!');
-            this.connected = false;
-        };
-        this.socket.onmessage = event =>
-        {
-            console.log('sybstenie');
-            this.handleMessage(event.data);
-        };
-        this.socket.onerror = error => 
-        {
-            console.log('mamata');
-            console.log(error);
-        };
+        this.socket.onmessage   = event => this.handleMessage(event.data);
+        this.socket.onerror     = error => console.log(error);
     }
 
     loginUser() {
         
         console.log('user loag: ');
-        if ( this.connected )
+        if ( this.socket.readyState === WebSocket.OPEN )
         {
-            this.socket.send({"user": "test", "password": "test"});
+            this.sendStringMassage('putki');
+            this.sendStringMassage(JSON.stringify({"user": "test", "password": "test"}));
         }
+    }
+
+    private sendStringMassage(msg: string)
+    {
+        this.socket.binaryType;
+        //var encodedObject = unescape(encodeURIComponent(JSON.stringify(myObject)));
+        this.socket.send(msg+'\n');
     }
 
     private handleMessage(data: any): void

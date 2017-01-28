@@ -28,7 +28,6 @@ export class Groups
   {
     // alert('add group!');
     this.dataService.connect();
-    this.dataService.loginUser();
   }
 
 }

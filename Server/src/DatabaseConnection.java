@@ -24,7 +24,7 @@ public class DatabaseConnection
 	{
 //		String url = "jdbc:mysql://localhost:3306/taskbo-rd?characterEncoding=UTF-8";
 		String url = "jdbc:mysql://192.168.0.200:3306/taskbo-rd?characterEncoding=UTF-8";
-		sqlConnection = DriverManager.getConnection( url, "root", "" );
+		sqlConnection = DriverManager.getConnection( url, "root", "raspy" );
 		userUID = "";
 	}
 	
