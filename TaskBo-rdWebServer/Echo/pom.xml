@@ -60,7 +60,7 @@
     </dependencies>
 
     <build>
-        <finalName>websocket-echo</finalName>
+        <finalName>taskbord</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -72,7 +72,7 @@
                 <version>2.3</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <warName>websocket-echo</warName>
+                    <warName>taskbord</warName>
                 </configuration>
             </plugin>
         </plugins>

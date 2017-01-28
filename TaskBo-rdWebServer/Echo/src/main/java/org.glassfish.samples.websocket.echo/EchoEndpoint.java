@@ -39,7 +39,12 @@
  */
 package org.glassfish.samples.websocket.echo;
 
+import java.io.IOException;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
 import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 /**
@@ -47,24 +52,26 @@ import javax.websocket.server.ServerEndpoint;
  *
  * @author Pavel Bucek (pavel.bucek at oracle.com)
  */
-@ServerEndpoint("/echo")
+@ServerEndpoint("/index")
 public class EchoEndpoint {
+    
+    @OnOpen
+    public void onOpen(Session session) throws IOException {
+        session.getBasicRemote().sendText("onOpen");
+    }
 
-    /**
-     * Incoming message is represented as parameter and return value is going to be send back to peer.
-     * </p>
-     * {@link javax.websocket.Session} can be put as a parameter and then you can gain better control of whole
-     * communication, like sending more than one message, process path parameters, {@link javax.websocket.Extension Extensions}
-     * and sub-protocols and much more.
-     *
-     * @param message incoming text message.
-     * @return outgoing message.
-     *
-     * @see OnMessage
-     * @see javax.websocket.Session
-     */
     @OnMessage
-    public String echo(String message) {
-        return message;
+    public String index(String message) {
+        return message + " (from your server)";
+    }
+
+    @OnError
+    public void onError(Throwable t) {
+        t.printStackTrace();
+    }
+
+    @OnClose
+    public void onClose(Session session) {
+
     }
 }
