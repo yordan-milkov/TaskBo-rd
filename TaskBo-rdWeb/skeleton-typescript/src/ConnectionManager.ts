@@ -1,3 +1,5 @@
+import { HttpClient } from 'aurelia-http-client';
+
 export class DataService
 {
     private socket: WebSocket;
@@ -15,7 +17,7 @@ export class DataService
     connect(): void
     {
         this.socket = new WebSocket("ws://localhost:4444");
-        this.socket.binaryType  = 'arraybuffer';
+        this.socket.binaryType = 'arraybuffer';
         this.socket.onopen = event =>
         {
             console.log('websocket connected')
@@ -26,17 +28,17 @@ export class DataService
             // this.eventAggregator.publish(WebsocketClient.CONNECTED_EVENT, this.socket);
             // resolve(this);
         };
-        this.socket.onmessage   = event => this.handleMessage(event.data);
-        this.socket.onerror     = error => console.log(error);
+        this.socket.onmessage = event => this.handleMessage(event.data);
+        this.socket.onerror = error => console.log(error);
     }
 
-    loginUser() {
-        
+    loginUser()
+    {
+
         console.log('user loag: ');
-        if ( this.socket.readyState === WebSocket.OPEN )
-        {
+        if (this.socket.readyState === WebSocket.OPEN) {
             this.sendStringMassage('putki');
-            this.sendStringMassage(JSON.stringify({"user": "test", "password": "test"}));
+            this.sendStringMassage(JSON.stringify({ "user": "test", "password": "test" }));
         }
     }
 
@@ -44,7 +46,7 @@ export class DataService
     {
         this.socket.binaryType;
         //var encodedObject = unescape(encodeURIComponent(JSON.stringify(myObject)));
-        this.socket.send(msg+'\n');
+        this.socket.send(msg + '\n');
     }
 
     private handleMessage(data: any): void
@@ -57,5 +59,33 @@ export class DataService
     {
         // socket.emit('add state', this.newstate); // <- works flawless
         // this.newstate = '';
+    }
+}
+
+export class ConnectionManager
+{
+    private httpClient: any;
+
+    constructor()
+    {
+        this.httpClient = new HttpClient()
+            .configure((x: any) =>
+            {
+                x.withBaseUrl('http://192.168.0.103/taskbord/php/')
+                x.withHeader("Content-type", " application/x-www-form-urlencoded");
+            });
+    }
+
+    login(uid: string, password: string): Promise<any>
+    {
+        return this.httpClient.post('login.php', `UID=${uid}&password=${password}`);
+    }
+
+    getGroupByUID(groupUID: string)
+    {
+        this.httpClient.createRequest('groups-info.php')
+            .asGet()
+            .withParams({ 'UID': groupUID })
+            .send();
     }
 }
