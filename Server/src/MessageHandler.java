@@ -10,10 +10,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -29,8 +32,8 @@ public class MessageHandler
 		socket      = inSocket;
 		received    = new BufferedReader( new InputStreamReader( socket.getInputStream(), "UTF-8" ) );
 		send		= new PrintWriter( new OutputStreamWriter( socket.getOutputStream(), "UTF-8" ) );
-		database	= new DatabaseConnection();
-
+        database	= new DatabaseConnection();
+//	new Scanner(received).useDelimiter("");
 		this.InitSocketCnnection();
 	}
 
@@ -64,6 +67,7 @@ public class MessageHandler
                     send.write( response );
                     send.flush();
                     success = true;
+					break;
                 }
                 initMessage = received.readLine();
             }
@@ -78,8 +82,6 @@ public class MessageHandler
 	public boolean AcceptLoginMessage()
 	{
 		boolean	success = false;
-
-
 		try
 		{
 			JSONObject	credentials = null;
@@ -119,8 +121,11 @@ public class MessageHandler
 				result.put("res", "Invalid user");
 			}
 			send.println( result.toString() );
-			send.flush();			
-			
+			send.flush();
+
+			send.println( "putki po masata" );
+			send.flush();
+
 		} catch (JSONException e)
 		{
 			// TODO Auto-generated catch block
