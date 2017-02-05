@@ -1,15 +1,17 @@
 import { inject } from 'aurelia-dependency-injection';
 import { Router, RouterConfiguration } from 'aurelia-router';
-import { GROUPS_FROM_SERVER } from './data';
+import { ConnectionManager } from './ConnectionManager';
 
-@inject(Router)
+@inject(Router, ConnectionManager)
 export class Tasks
 {
     private router: Router;
-    heading: string;
+    private connection: ConnectionManager;
+    groupData: any;
     tasks: any[]; //received array of group's tasks
-    constructor(router)
+    constructor(router, connection)
     {
+        this.connection = connection;
         this.router = router;
         this.router.configure((config: RouterConfiguration) =>
         {
@@ -21,16 +23,25 @@ export class Tasks
         });
     }
 
-    attached()
+  /*  attached()
     {
         console.log('tasks:attached');
-    }
+        console.log(this.tasks);
+    }*/
 
     activate(params: any)
     {
         console.log(params)
-        this.heading = 'Group with UID: ' + params.id;
-        this.tasks = getTasks(params.id); //TODO: server call for tasks by group UID
+        this.connection.getTasksByGroup(params.id)
+            .then(
+            (data: any) =>
+            {
+                this.tasks = JSON.parse(data.response);
+        console.log(this.tasks);
+            }
+            );
+        console.log(this.tasks);
+        // this.heading = 'Group with UID: ' + ;
     }
 
     navigateToTask(params)
@@ -41,9 +52,5 @@ export class Tasks
 
 function getTasks(id)
 {
-    for (let i = 0; i < GROUPS_FROM_SERVER.length; i++) {
-        if (GROUPS_FROM_SERVER[i].uid === id) {
-            return GROUPS_FROM_SERVER[i].tasks;
-        }
-    }
+
 }

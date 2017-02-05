@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", "./data"], function (require, exports, aurelia_dependency_injection_1, aurelia_router_1, data_1) {
+define(["require", "exports", "aurelia-dependency-injection", "aurelia-router"], function (require, exports, aurelia_dependency_injection_1, aurelia_router_1) {
     "use strict";
     var Tasks = (function () {
         function Tasks(router) {
@@ -26,7 +26,6 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", 
         Tasks.prototype.activate = function (params) {
             console.log(params);
             this.heading = 'Group with UID: ' + params.id;
-            this.tasks = getTasks(params.id);
         };
         Tasks.prototype.navigateToTask = function (params) {
             this.router.navigate('task/' + params);
@@ -39,11 +38,6 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", 
     ], Tasks);
     exports.Tasks = Tasks;
     function getTasks(id) {
-        for (var i = 0; i < data_1.GROUPS_FROM_SERVER.length; i++) {
-            if (data_1.GROUPS_FROM_SERVER[i].uid === id) {
-                return data_1.GROUPS_FROM_SERVER[i].tasks;
-            }
-        }
     }
 });
 

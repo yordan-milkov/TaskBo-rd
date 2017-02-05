@@ -1,6 +1,4 @@
 <?php
-// header('Access-Control-Allow-Origin: *');
-// header('Content-type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Content-type: application/x-www-form-urlencoded; charset=utf-8');
 

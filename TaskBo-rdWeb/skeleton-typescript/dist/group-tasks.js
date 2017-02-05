@@ -7,10 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", "./data"], function (require, exports, aurelia_dependency_injection_1, aurelia_router_1, data_1) {
+define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", "./ConnectionManager"], function (require, exports, aurelia_dependency_injection_1, aurelia_router_1, ConnectionManager_1) {
     "use strict";
     var Tasks = (function () {
-        function Tasks(router) {
+        function Tasks(router, connection) {
+            this.connection = connection;
             this.router = router;
             this.router.configure(function (config) {
                 config.map([
@@ -20,13 +21,15 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", 
                 return config;
             });
         }
-        Tasks.prototype.attached = function () {
-            console.log('tasks:attached');
-        };
         Tasks.prototype.activate = function (params) {
+            var _this = this;
             console.log(params);
-            this.heading = 'Group with UID: ' + params.id;
-            this.tasks = getTasks(params.id);
+            this.connection.getTasksByGroup(params.id)
+                .then(function (data) {
+                _this.tasks = JSON.parse(data.response);
+                console.log(_this.tasks);
+            });
+            console.log(this.tasks);
         };
         Tasks.prototype.navigateToTask = function (params) {
             this.router.navigate('task/' + params);
@@ -34,17 +37,12 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", 
         return Tasks;
     }());
     Tasks = __decorate([
-        aurelia_dependency_injection_1.inject(aurelia_router_1.Router),
-        __metadata("design:paramtypes", [Object])
+        aurelia_dependency_injection_1.inject(aurelia_router_1.Router, ConnectionManager_1.ConnectionManager),
+        __metadata("design:paramtypes", [Object, Object])
     ], Tasks);
     exports.Tasks = Tasks;
     function getTasks(id) {
-        for (var i = 0; i < data_1.GROUPS_FROM_SERVER.length; i++) {
-            if (data_1.GROUPS_FROM_SERVER[i].uid === id) {
-                return data_1.GROUPS_FROM_SERVER[i].tasks;
-            }
-        }
     }
 });
 
-//# sourceMappingURL=tasks.js.map
+//# sourceMappingURL=group-tasks.js.map

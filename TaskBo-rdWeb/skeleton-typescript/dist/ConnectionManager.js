@@ -40,17 +40,23 @@ define(["require", "exports", "aurelia-http-client"], function (require, exports
         function ConnectionManager() {
             this.httpClient = new aurelia_http_client_1.HttpClient()
                 .configure(function (x) {
-                x.withBaseUrl('http://192.168.0.103/taskbord/php/');
+                x.withBaseUrl('http://192.168.0.201/TaskBo-rdWebServer/php/');
                 x.withHeader("Content-type", " application/x-www-form-urlencoded");
             });
         }
         ConnectionManager.prototype.login = function (uid, password) {
             return this.httpClient.post('login.php', "UID=" + uid + "&password=" + password);
         };
-        ConnectionManager.prototype.getGroupByUID = function (groupUID) {
-            this.httpClient.createRequest('groups-info.php')
+        ConnectionManager.prototype.getGroupsByUID = function (UserID) {
+            return this.httpClient.createRequest('user-groups.php')
                 .asGet()
-                .withParams({ 'UID': groupUID })
+                .withParams({ 'UID': UserID })
+                .send();
+        };
+        ConnectionManager.prototype.getTasksByGroup = function (groupID) {
+            return this.httpClient.createRequest('group-data.php')
+                .asGet()
+                .withParams({ 'groupID': groupID })
                 .send();
         };
         return ConnectionManager;

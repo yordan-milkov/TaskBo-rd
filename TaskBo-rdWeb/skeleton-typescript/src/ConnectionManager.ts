@@ -71,7 +71,7 @@ export class ConnectionManager
         this.httpClient = new HttpClient()
             .configure((x: any) =>
             {
-                x.withBaseUrl('http://192.168.0.103/taskbord/php/')
+                x.withBaseUrl('http://192.168.0.201/TaskBo-rdWebServer/php/')
                 x.withHeader("Content-type", " application/x-www-form-urlencoded");
             });
     }
@@ -81,11 +81,19 @@ export class ConnectionManager
         return this.httpClient.post('login.php', `UID=${uid}&password=${password}`);
     }
 
-    getGroupByUID(groupUID: string)
+    getGroupsByUID(UserID: string): any
     {
-        this.httpClient.createRequest('groups-info.php')
+       return this.httpClient.createRequest('user-groups.php')
             .asGet()
-            .withParams({ 'UID': groupUID })
+            .withParams({ 'UID': UserID })
+            .send();
+    }
+
+    getTasksByGroup(groupID: string) : any
+    {
+        return this.httpClient.createRequest('group-data.php')
+            .asGet()
+            .withParams({ 'groupID': groupID })
             .send();
     }
 }

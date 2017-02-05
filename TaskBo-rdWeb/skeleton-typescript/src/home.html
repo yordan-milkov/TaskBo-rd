@@ -1,7 +1,19 @@
-<template><section class="au-animate"><h2>${heading}</h2><button class="btn btn-default" click.trigger="addGroup()"><span class="glyphicon glyphicon-plus"></span></button><!--
+<template>
+	<section class="au-animate">
+		<h2>${heading}</h2>
+		<button class="btn btn-default" click.trigger="addGroup()">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+<!--
 			<button class="btn btn-default" click.trigger="addGroup()">
 			<span class="glyphicon glyphicon-plus"></span>
-		</button>--><div class="list-group" repeat.for="group of groups"><a href="#" class="list-group-item" text.bind="group.grName" click.trigger="navigateToTasks(group.uid)"></a></div><!--<form role="form" submit.delegate="submit()"> route-href="route: tasks; params.bind: {id: group.uid, tasks: group.tasks}"
+		</button>-->
+
+		<div class="list-group" repeat.for="group of groups">
+			<a href="#"  class="list-group-item" text.bind="group.name" click.trigger="navigateToTasks(group.groupUID)"></a>
+		</div>
+
+		<!--<form role="form" submit.delegate="submit()"> route-href="route: tasks; params.bind: {id: group.uid, tasks: group.tasks}"
 			<div class="form-group">
 				<label for="fn">First Name</label>
 				<input type="text" value.bind="firstName" class="form-control" id="fn" placeholder="first name">
@@ -15,4 +27,6 @@
 				<p class="help-block">${fullName | upper}</p>
 			</div>
 			<button type="submit" class="btn btn-default">Submit</button>
-		</form>--></section></template>
+		</form>-->
+	</section>
+</template>

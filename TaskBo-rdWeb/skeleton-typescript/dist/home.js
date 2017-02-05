@@ -7,31 +7,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define(["require", "exports", "aurelia-framework", "aurelia-router", "./data", "./ConnectionManager"], function (require, exports, aurelia_framework_1, aurelia_router_1, data_1, ConnectionManager_1) {
+define(["require", "exports", "aurelia-framework", "aurelia-router", "./ConnectionManager"], function (require, exports, aurelia_framework_1, aurelia_router_1, ConnectionManager_1) {
     "use strict";
-    var Groups = (function () {
-        function Groups(router, dataService, connectionManager) {
+    var Home = (function () {
+        function Home(router, dataService, connectionManager) {
             this.heading = 'Welcome to TaskBo-rd!';
             this.router = router;
             this.connection = connectionManager;
-            this.groups = data_1.GROUPS_FROM_SERVER;
         }
-        Groups.prototype.navigateToTasks = function (uid) {
-            console.log(uid);
-            this.router.navigate('tasks/' + uid);
-        };
-        Groups.prototype.addGroup = function () {
-            this.connection.login('test', 'test').then(function (responseData) {
-                console.log(responseData);
+        Home.prototype.activate = function () {
+            var _this = this;
+            this.connection.getGroupsByUID('test')
+                .then(function (data) {
+                var result = JSON.parse(data.response);
+                console.log(result);
+                _this.groups = result;
             });
+            console.log(this.groups);
         };
-        return Groups;
+        Home.prototype.navigateToTasks = function (uid) {
+            console.log(uid);
+            this.router.navigate('group-tasks/' + uid);
+        };
+        Home.prototype.addGroup = function () {
+        };
+        return Home;
     }());
-    Groups = __decorate([
+    Home = __decorate([
         aurelia_framework_1.inject(aurelia_router_1.Router, ConnectionManager_1.DataService, ConnectionManager_1.ConnectionManager),
         __metadata("design:paramtypes", [aurelia_router_1.Router, ConnectionManager_1.DataService, ConnectionManager_1.ConnectionManager])
-    ], Groups);
-    exports.Groups = Groups;
+    ], Home);
+    exports.Home = Home;
 });
 
-//# sourceMappingURL=groups.js.map
+//# sourceMappingURL=home.js.map
