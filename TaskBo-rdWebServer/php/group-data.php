@@ -6,7 +6,7 @@ include 'dbConfig.php';
 
 $groupUID = trim($_GET['groupUID']);
 
-        $row = mysql_query("SELECT * FROM issues WHERE groupUID = '$groupUID'");
+        $row = mysql_query("SELECT name, description, issueUID, isResolved FROM issues WHERE groupUID = '$groupUID'");
         	$arr = array();
         	while($rs = mysql_fetch_assoc($row)) {
         		$arr[] = $rs;
