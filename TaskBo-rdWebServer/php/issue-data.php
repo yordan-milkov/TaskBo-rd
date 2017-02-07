@@ -4,9 +4,9 @@ header('Content-type: application/x-www-form-urlencoded; charset=utf-8');
 
 include 'dbConfig.php';
 
-$groupUID = trim($_GET['groupUID']);
+$issueUID = trim($_GET['issueUID']);
 
-        $row = mysql_query("SELECT * FROM issues WHERE groupUID = '$groupUID'");
+        $row = mysql_query("SELECT * FROM checks WHERE issueUID = '$groupUID'");
         	$arr = array();
         	while($rs = mysql_fetch_assoc($row)) {
         		$arr[] = $rs;
