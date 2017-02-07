@@ -93,7 +93,36 @@ export class ConnectionManager
     {
         return this.httpClient.createRequest('group-data.php')
             .asGet()
-            .withParams({ 'groupID': groupID })
+            .withParams({ 'groupUID': groupID })
             .send();
+    }
+
+    getUsersByGroup(groupID: string) : any
+    {
+        return this.httpClient.createRequest('group-users.php')//todo
+            .asGet()
+            .withParams({ 'groupUID': groupID })
+            .send();
+    }
+
+    getTaskData(taskID: string) : any
+    {
+        return this.httpClient.createRequest('issue-data.php')
+            .asGet()
+            .withParams({ 'issueUID': taskID })
+            .send();
+    }
+    
+    getTaskChecks(taskID: string) : any
+    {
+        return this.httpClient.createRequest('issue-checks.php') //to do
+            .asGet()
+            .withParams({ 'issueUID': taskID })
+            .send();
+    }
+
+    updateCheckState(isChecked: boolean, checkUID: string)
+    {
+        return this.httpClient.post('issue-checks-finish.php', `isFinished=${isChecked?1:0}&checkUID=${checkUID}`);
     }
 }

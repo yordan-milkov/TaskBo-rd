@@ -7,19 +7,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", "./data"], function (require, exports, aurelia_dependency_injection_1, aurelia_router_1, data_1) {
+define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", "./ConnectionManager"], function (require, exports, aurelia_dependency_injection_1, aurelia_router_1, ConnectionManager_1) {
     "use strict";
     var Task = (function () {
-        function Task(router) {
+        function Task(router, connect) {
             this.router = router;
+            this.connect = connect;
         }
         Task.prototype.attached = function () {
-            console.log('task:attached');
         };
         Task.prototype.activate = function (params) {
+            var _this = this;
             console.log(params);
-            this.heading = 'Task with UID: ' + params.id;
-            this.task = getTask(params.id);
+            console.log(params.id);
+            this.connect.getTaskData(params.id)
+                .then(function (data) {
+                _this.task = JSON.parse(data.response)[0];
+                _this.heading = 'Task: ' + _this.task.name;
+                console.log(_this.task);
+            });
+            this.connect.getTaskChecks(params.id)
+                .then(function (data) {
+                _this.checkboxes = JSON.parse(data.response);
+                console.log(_this.checkboxes);
+            });
+        };
+        Task.prototype.onCheckboxChanged = function (isChecked, checkUID) {
+            this.connect.updateCheckState(isChecked, checkUID)
+                .then(function (data) {
+                console.log(data);
+            });
         };
         Task.prototype.editTask = function (params) {
             this.router.navigate('edit/' + params);
@@ -27,17 +44,10 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", 
         return Task;
     }());
     Task = __decorate([
-        aurelia_dependency_injection_1.inject(aurelia_router_1.Router),
-        __metadata("design:paramtypes", [aurelia_router_1.Router])
+        aurelia_dependency_injection_1.inject(aurelia_router_1.Router, ConnectionManager_1.ConnectionManager),
+        __metadata("design:paramtypes", [aurelia_router_1.Router, ConnectionManager_1.ConnectionManager])
     ], Task);
     exports.Task = Task;
-    function getTask(taskId) {
-        for (var i = 0; i < data_1.TASKS_FROM_SERVER.length; i++) {
-            if (data_1.TASKS_FROM_SERVER[i].id === taskId) {
-                return data_1.TASKS_FROM_SERVER[i];
-            }
-        }
-    }
 });
 
 //# sourceMappingURL=task.js.map

@@ -15,7 +15,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr repeat.for='task of tasks' click.delegate='navigateToTask(task.id)'>
+					<tr repeat.for='task of tasks' click.delegate='navigateToTask(task.issueUID)'>
             <td>${task.issueUID}</td>
             <td>${task.name}</td>
             <td>${task.description}</td>

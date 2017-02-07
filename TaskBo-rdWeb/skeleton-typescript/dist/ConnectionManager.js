@@ -56,8 +56,29 @@ define(["require", "exports", "aurelia-http-client"], function (require, exports
         ConnectionManager.prototype.getTasksByGroup = function (groupID) {
             return this.httpClient.createRequest('group-data.php')
                 .asGet()
-                .withParams({ 'groupID': groupID })
+                .withParams({ 'groupUID': groupID })
                 .send();
+        };
+        ConnectionManager.prototype.getUsersByGroup = function (groupID) {
+            return this.httpClient.createRequest('group-users.php')
+                .asGet()
+                .withParams({ 'groupUID': groupID })
+                .send();
+        };
+        ConnectionManager.prototype.getTaskData = function (taskID) {
+            return this.httpClient.createRequest('issue-data.php')
+                .asGet()
+                .withParams({ 'issueUID': taskID })
+                .send();
+        };
+        ConnectionManager.prototype.getTaskChecks = function (taskID) {
+            return this.httpClient.createRequest('issue-checks.php')
+                .asGet()
+                .withParams({ 'issueUID': taskID })
+                .send();
+        };
+        ConnectionManager.prototype.updateCheckState = function (isChecked, checkUID) {
+            return this.httpClient.post('issue-checks-finish.php', "isFinished=" + (isChecked ? 1 : 0) + "&checkUID=" + checkUID);
         };
         return ConnectionManager;
     }());
