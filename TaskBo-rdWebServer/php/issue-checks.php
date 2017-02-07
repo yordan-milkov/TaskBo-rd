@@ -6,7 +6,7 @@ include 'dbConfig.php';
 
 $issueUID = trim($_GET['issueUID']);
 
-        $row = mysql_query("SELECT * FROM issues WHERE issueUID = '$issueUID'");
+        $row = mysql_query("SELECT * FROM checks WHERE issueUID = '$issueUID'");
         	$arr = array();
         	while($rs = mysql_fetch_assoc($row)) {
         		$arr[] = $rs;
