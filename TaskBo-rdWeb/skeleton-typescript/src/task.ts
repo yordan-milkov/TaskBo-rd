@@ -2,42 +2,65 @@
 // import "jquery-ui";
 import { inject } from 'aurelia-dependency-injection';
 import { Router, RouterConfiguration } from 'aurelia-router';
-import { TASKS_FROM_SERVER } from './data';
+import { ConnectionManager } from './ConnectionManager';
 
-@inject(Router)
+@inject(Router, ConnectionManager)
 export class Task
 {
     private router: Router;
+    private connect: ConnectionManager;
     heading: string;
     task: any; //received task
-    constructor(router: Router)
+    checkboxes: any;
+    constructor(router: Router, connect: ConnectionManager)
     {
         this.router = router;
+        this.connect = connect; 
     }
 
     attached()
     {
-        console.log('task:attached');
+        //console.log('task:attached');
     }
 
     activate(params: any)
     {
-        console.log(params)
-        this.heading = 'Task with UID: ' + params.id;
-        this.task = getTask(params.id); //TODO: server call for task
+        console.log(params);
+        console.log(params.id);
+        
+        this.connect.getTaskData( params.id )
+        .then(
+        (data: any) =>
+        {
+            this.task = JSON.parse(data.response)[0];
+            this.heading = 'Task: ' + this.task.name;
+            console.log(this.task);
+        }
+        );
+
+        this.connect.getTaskChecks( params.id )
+        .then(
+        (data: any) =>
+        {
+            this.checkboxes = JSON.parse(data.response);
+            console.log(this.checkboxes);
+        }
+        );
+    }
+
+    onCheckboxChanged(isChecked: boolean, checkUID: string)
+    {
+        this.connect.updateCheckState(isChecked, checkUID)
+        .then(
+        (data: any) =>
+        {
+            console.log(data)
+        }
+        )
     }
 
     editTask(params)
     {
         this.router.navigate('edit/' + params)
-    }
-}
-
-function getTask(taskId)
-{
-    for (let i = 0; i < TASKS_FROM_SERVER.length; i++) {
-        if (TASKS_FROM_SERVER[i].id === taskId) {
-            return TASKS_FROM_SERVER[i];
-        }
     }
 }
