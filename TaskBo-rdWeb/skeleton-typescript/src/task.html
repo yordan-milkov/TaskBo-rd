@@ -7,14 +7,25 @@
 			<div>${task.name}</div>
 			<label for="taskDescr">Description: </label>
 			<div>${task.description}</div>
+			<label for="taskAssignees">Assigned to: </label>
+			<div repeat.for="currAssignie of assigniees">
+				${currAssignie}
+			</div>
 			<label for="taskDueTo">DueTo: </label>
 			<div>${task.dueTo}</div>
 
-			<div repeat.for="checkbox of checkboxes">
+			<div repeat.for="currCheck of checkboxes">
 				<label>
-					<input type="checkbox" checked.bind="checkbox.isFinished === '1'" model.bind="checkbox.isFinished" change.delegate="onCheckboxChanged($event.target.checked, checkbox.checkUID)">${checkbox.name}
+					<input	type="checkbox"
+							checked.bind="currCheck.isFinished"
+							model.bind="currCheck.isFinished"
+							change.delegate="onCheckboxChanged($event.target.checked, currCheck.checkUID)"
+					>${currCheck.name}
 				</label>
 			</div>
+			
+			<input type="text" class="form-control" value.bind="newCheck" placeholder="newCheck">
+			<button class="btn btn-default glyphicon glyphicon-plus" click.delegate='addCheck()'></button>
 
 			<button class="btn btn-default glyphicon glyphicon-edit" click.delegate='editTask(task.issueUID)'></button>
 	</section>

@@ -24,7 +24,8 @@ export class Login
         this.connection
             .login(this.username, this.password)
             .then((data) => {
-                console.log(data);
+                let userData = JSON.parse(data.response);
+                localStorage.setItem( 'UID', userData.UID );
                 this.aurelia.setRoot('app');
             });
     }

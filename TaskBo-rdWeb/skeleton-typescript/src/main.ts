@@ -5,7 +5,9 @@ import {Login} from './login';
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
-    .developmentLogging();
+    .developmentLogging()
+    .plugin('aurelia-dialog')
+    .plugin('aurelia-autocomplete');
     
     console.log((<any>DOM));
 
@@ -16,7 +18,8 @@ export function configure(aurelia: Aurelia) {
   // aurelia.use.plugin('aurelia-html-import-template-loader')
 
   aurelia.start().then(a => {
-      if (aurelia.container.get(Login).isLoggedIn) {
+    console.log(localStorage.getItem('user'));
+      if (localStorage.getItem('UID') !== null ) {
         a.setRoot('app');
       } else {
         a.setRoot('login');
