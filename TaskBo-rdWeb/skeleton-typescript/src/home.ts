@@ -18,7 +18,7 @@ export class Home
 
   public activate()
   {
-      this.connection.getGroupsByUID('test')
+    this.connection.getGroupsByUID('test')
       .then(
       (data: any) =>
       {
@@ -27,7 +27,7 @@ export class Home
         this.groups = result;
       }
       );
-     console.log(this.groups);
+    console.log(this.groups);
   }
 
   public navigateToTasks(uid: string): void
@@ -44,7 +44,12 @@ export class Home
     // this.connection.login('test', 'test').then((responseData) => {
     //  console.log(responseData);
     // });
+    this.editGroup( 'new' );
+  }
 
+  editGroup(uid: string)
+  {
+      this.router.navigate('addEditGroup/' + uid);
   }
 
 }

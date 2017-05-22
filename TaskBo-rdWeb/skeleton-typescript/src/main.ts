@@ -18,8 +18,7 @@ export function configure(aurelia: Aurelia) {
   // aurelia.use.plugin('aurelia-html-import-template-loader')
 
   aurelia.start().then(a => {
-    console.log(localStorage.getItem('user'));
-      if (localStorage.getItem('UID') !== null ) {
+      if (localStorage.getItem('UID') != null ) {
         a.setRoot('app');
       } else {
         a.setRoot('login');

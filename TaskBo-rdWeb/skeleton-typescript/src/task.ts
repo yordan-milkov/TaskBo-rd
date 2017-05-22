@@ -28,6 +28,18 @@ export class Task
         //console.log('task:attached');
     }
 
+    fillGroupUsers(groupID)
+    {
+        this.connect.getUsersByGroup(groupID)
+            .then(
+            (data: any) =>
+            {
+                this.groupUsers = JSON.parse(data.response);
+                console.log( this.groupUsers );
+                this.fillAssignieList();
+            });
+    }
+
     getTaskData(taskID)
     {
         this.connect.getTaskData(taskID)
@@ -39,13 +51,7 @@ export class Task
                 this.task.isResolved = this.task.isResolved == 1 ? true : false;
                 console.log(this.task);
 
-                this.connect.getUsersByGroup(this.task.groupUID)
-                .then(
-                (data: any) =>
-                {
-                    this.groupUsers  = JSON.parse(data.response);
-                    this.fillAssignieList();
-                });
+                this.fillGroupUsers( this.task.groupUID )
             }
             );
     }
@@ -88,9 +94,10 @@ export class Task
             let newItem = {
                 name: this.newCheck,
                 isFinished: false,
-                issueUID: this.task.issueUID };
+                issueUID: this.task.issueUID
+            };
             this.checkboxes.push(newItem);
-            this.connect.addCheck( newItem );
+            this.connect.addCheck(newItem);
             this.newCheck = '';
             console.log(this.checkboxes)
         }
@@ -103,14 +110,11 @@ export class Task
 
     fillAssignieList()
     {
-        let userList = this.task.users.split( "," )
-        for( let item of userList )
-        {
-            for( let user of this.groupUsers )
-            {
-                if ( item === user.UID )
-                {
-                    this.assigniees.push( user.name );
+        let userList = this.task.users.split(",")
+        for (let item of userList) {
+            for (let user of this.groupUsers) {
+                if (item === user.UID) {
+                    this.assigniees.push(user.name);
                     break;
                 }
             }

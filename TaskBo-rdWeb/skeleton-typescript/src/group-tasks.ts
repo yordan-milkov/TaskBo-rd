@@ -7,37 +7,38 @@ export class Tasks
 {
     private router: Router;
     private connection: ConnectionManager;
-    groupData: any;
+    groupUID: any;
     tasks: any[]; //received array of group's tasks
     constructor(router, connection)
     {
         this.connection = connection;
         this.router = router;
-        this.router.configure((config: RouterConfiguration) =>
-        {
-            config.map([
-                { route: 'task/:id', name: 'task', moduleId: 'task', nav: false, title: 'View task', href: 'task' },
-                { route: 'edit/:id', name: 'editTask', moduleId: 'editTask', nav: false, title: 'Edit task', href: 'editTrask' }
-            ]);
-            return config;
-        });
+        // this.router.configure((config: RouterConfiguration) =>
+        // {
+        //     config.map([
+                
+        //     ]);
+        //     return config;
+        // });
     }
 
-  /*  attached()
-    {
-        console.log('tasks:attached');
-        console.log(this.tasks);
-    }*/
+    /*  attached()
+      {
+          console.log('tasks:attached');
+          console.log(this.tasks);
+      }*/
 
     activate(params: any)
     {
         console.log(params)
-        this.connection.getTasksByGroup(params.id)
+        this.groupUID = params.id;
+
+        this.connection.getTasksByGroup(this.groupUID)
             .then(
             (data: any) =>
             {
                 this.tasks = JSON.parse(data.response);
-        console.log(this.tasks);
+                console.log(this.tasks);
             }
             );
         console.log(this.tasks);
@@ -47,6 +48,17 @@ export class Tasks
     navigateToTask(params)
     {
         this.router.navigate('task/' + params)
+    }
+
+    editTask(issueUID)
+    {
+        this.router.navigate('edit/' + issueUID)
+    }
+
+    addTask()
+    {
+        console.log(this.groupUID);
+        this.router.navigate('edit/new' + this.groupUID);
     }
 }
 

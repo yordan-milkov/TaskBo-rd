@@ -27,12 +27,40 @@ export class ConnectionManager
             .send();
     }
 
-    getTasksByGroup(groupID: string) : any
+    getGroupData(groupID: string) : any
     {
         return this.httpClient.createRequest('group-data.php')
             .asGet()
             .withParams({ 'groupUID': groupID })
             .send();
+    }
+
+    updateGroupData(groupID: string, name: string, description: string) : any
+    {
+         return this.httpClient.post('group-data-update.php', `groupUID=${groupID}&description=${description}&name=${name}`);
+    }
+    
+    createGroup(name: string, description: string) : any
+    {
+         return this.httpClient.post('group-data-update.php', `description=${description}&name=${name}`);
+    }
+
+    updateUserInGroup(groupID: string, name: string, action: number)
+    {
+        return this.httpClient.post('group-user-update.php', `groupUID=${groupID}&name=${name}&action=${action}`);
+    }
+
+    getTasksByGroup(groupID: string) : any
+    {
+        return this.httpClient.createRequest('group-issues.php')
+            .asGet()
+            .withParams({ 'groupUID': groupID })
+            .send();
+    }
+
+    getAllUsers() : any
+    {
+        return this.httpClient.post('all-users.php', ``);
     }
 
     getUsersByGroup(groupID: string) : any
@@ -70,6 +98,14 @@ export class ConnectionManager
         taskData.isFinished = taskData.isFinished ? 1 : 0;
         return this.httpClient.post('issue-data-update.php',
             `name=${taskData.name}&description=${taskData.description}&users=${taskData.users}&issueUID=${taskData.issueUID}`
+            );
+    }
+
+    createTaskData(taskData: any)
+    {
+        taskData.isFinished = false;
+        return this.httpClient.post('issue-data-update.php',
+            `name=${taskData.name}&description=${taskData.description}&users=${taskData.users}&groupUID=${taskData.groupUID}`
             );
     }
 

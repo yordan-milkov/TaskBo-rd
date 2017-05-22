@@ -15,11 +15,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr repeat.for='task of tasks' click.delegate='navigateToTask(task.issueUID)'>
-            <td>${task.issueUID}</td>
-            <td>${task.name}</td>
-            <td>${task.description}</td>
+					<tr repeat.for='task of tasks'>
+            			<td click.delegate='navigateToTask(task.issueUID)'>${task.issueUID}</td>
+           				<td click.delegate='navigateToTask(task.issueUID)'>${task.name}</td>
+						<td click.delegate='navigateToTask(task.issueUID)'>${task.description}</td>
+						<td><button class="btn btn-default glyphicon glyphicon-edit" click.delegate='editTask(task.issueUID)'></button></td>
 					</tr>
+					<tr><td><button class="btn btn-default glyphicon glyphicon-plus" click.delegate='addTask(task.issueUID)'></button></td></tr>
 				</tbody>
 			</table>
 	</section>

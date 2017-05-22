@@ -1,0 +1,22 @@
+<template>
+	<section class="au-animate">
+		<div class="container">
+			<h2>Edit group ${group.name}</h2>
+			<label for="groupName">Name: </label>
+			<input type="text" class="form-control" value.bind="group.name" placeholder="group.name">
+			<label for="groupDescr">Description: </label>
+			<input type="text" class="form-control" value.bind="group.description" placeholder="group.description">
+			<label for="GroupUsers">Users: </label>
+			<div repeat.for="currUser of groupUsers">
+				${currUser.name}
+				<button class="btn btn-default glyphicon glyphicon-trash" click.delegate='removeUser(currUser)'></button>
+			</div>
+
+
+			<auto-complete items.bind="allUsers" result.two-way="selected"></auto-complete>
+			<button class="btn btn-default glyphicon glyphicon-plus" click.delegate='addUser()'></button>
+            
+			<button class="btn btn-default glyphicon glyphicon-save" click.delegate='saveGroup()'></button>
+			<button class="btn btn-default glyphicon glyphicon-remove" click.delegate='endEdit()'></button>
+	</section>
+</template>

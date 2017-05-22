@@ -11,6 +11,7 @@
 
 		<div class="list-group" repeat.for="group of groups">
 			<a href="#"  class="list-group-item" text.bind="group.name" click.trigger="navigateToTasks(group.groupUID)"></a>
+			<button class="btn btn-default glyphicon glyphicon-edit" click.delegate='editGroup(group.groupUID)'></button>
 		</div>
 
 		<!--<form role="form" submit.delegate="submit()"> route-href="route: tasks; params.bind: {id: group.uid, tasks: group.tasks}"
