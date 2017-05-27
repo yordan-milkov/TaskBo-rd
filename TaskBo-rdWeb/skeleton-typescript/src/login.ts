@@ -26,6 +26,9 @@ export class Login
             .then((data) => {
                 let userData = JSON.parse(data.response);
                 localStorage.setItem( 'UID', userData.UID );
+                localStorage.setItem( 'mail', userData.mail );
+                localStorage.setItem( 'name', userData.name );
+                localStorage.setItem( 'GSM', userData.GSM );
                 this.aurelia.setRoot('app');
             });
     }

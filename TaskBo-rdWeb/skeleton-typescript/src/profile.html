@@ -1,0 +1,15 @@
+<template>
+	<section class="au-animate">
+		<div class="container">
+			<h2>User Profile: ${user.name}</h2>
+			<label for="userUID">User name: </label>
+			<div>${user.UID}</div>
+			<label for="userEmail">Email: </label>
+			<div>${user.mail}</div>
+			<label for="taskDueTo">GSM: </label>
+			<div>${user.GSM}</div>
+
+
+			<button class="btn btn-default glyphicon glyphicon-edit" click.delegate='editUser()'></button>
+	</section>
+</template>
