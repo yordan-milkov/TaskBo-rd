@@ -14,13 +14,6 @@ export class Tasks
     {
         this.connection = connection;
         this.router = router;
-        // this.router.configure((config: RouterConfiguration) =>
-        // {
-        //     config.map([
-                
-        //     ]);
-        //     return config;
-        // });
     }
 
     /*  attached()
@@ -61,9 +54,4 @@ export class Tasks
         console.log(this.groupUID);
         this.router.navigate('edit/new' + this.groupUID);
     }
-}
-
-function getTasks(id)
-{
-
 }

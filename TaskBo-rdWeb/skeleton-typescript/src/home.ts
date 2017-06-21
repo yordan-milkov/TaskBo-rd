@@ -18,16 +18,18 @@ export class Home
 
   public activate()
   {
-    this.connection.getGroupsByUID('test')
+    if (localStorage.getItem('UID') != null )
+    {
+      this.connection.getGroupsByUID(localStorage.getItem('UID'))
       .then(
       (data: any) =>
       {
         let result = JSON.parse(data.response);
-        console.log(result);
+        console.log( result );
         this.groups = result;
       }
       );
-    console.log(this.groups);
+    }
   }
 
   public navigateToTasks(uid: string): void

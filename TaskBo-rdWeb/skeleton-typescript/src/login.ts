@@ -9,14 +9,15 @@ export class Login
     private connection: ConnectionManager;
 
     isLoggedIn: boolean;
-    username: string = "test";
-    password: string = "test";
+    username: string = "";
+    password: string = "";
 
     constructor(aurelia: Aurelia, connectionManager: ConnectionManager)
     {
         this.aurelia = aurelia;
         this.connection = connectionManager;
         this.isLoggedIn = false;
+        localStorage.clear();
     }
 
     login()

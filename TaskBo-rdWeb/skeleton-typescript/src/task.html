@@ -2,7 +2,9 @@
 	<require from="./components/datepicker"></require>
 	<section class="au-animate" id="task">
 		<div class="container">
-			<h2>View task with id: ${task.issueUID}</h2>
+			<h2>View task with id: ${task.issueUID}
+				<button class="btn btn-primary fa fa-flag-checkered" click.trigger='editTask(task.issueUID)'></button>
+			</h2>	
 			<div class="task-info">
 				<label for="taskName">Name: </label>
 				<div>${task.name}</div><br>
@@ -13,9 +15,6 @@
 					<li repeat.for="currAssignie of assigniees">${currAssignie}</li>
 				</ul>
 			</div>
-			<label for="taskDueTo">DueTo: </label>
-			<div>${task.dueTo}</div>
-			<div repeat.for="currCheck of checkboxes">
 				<div class="checkboxes" repeat.for="currCheck of checkboxes">
 					<label>
 					<input	type="checkbox"

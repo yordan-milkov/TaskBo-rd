@@ -9,7 +9,7 @@ export class ConnectionManager
         this.httpClient = new HttpClient()
             .configure((x: any) =>
             {
-                x.withBaseUrl('http://192.168.0.201/TaskBo-rdWebServer/php/');
+                x.withBaseUrl('http://localhost/TaskBo-rdWebServer/php/');
                 x.withHeader("Content-type", " application/x-www-form-urlencoded");
             });
     }
