@@ -1,11 +1,11 @@
 <template>
-	<section class="au-animate">
+	<section id="home" class="au-animate">
 		<h2>${heading}</h2>
 		<div class="list-group" repeat.for="group of groups">
-			<a href="#"  class="list-group-item" text.bind="group.name" click.trigger="navigateToTasks(group.groupUID)"></a>
-			<button class="btn btn-default glyphicon glyphicon-edit" click.delegate='editGroup(group.groupUID)'></button>
+			<button class="btn btn-default" click.trigger='navigateToTasks(group.groupUID)'>${group.name}</button>
+			<button class="btn btn-primary fa fa-pencil" title="Edit" click.trigger='editGroup(group.groupUID)'></button>
 		</div>
-		<button class="btn btn-default" click.trigger="addGroup()">
+		<button class="btn btn-success" id="add-group" title="Add group" click.trigger="addGroup()">
 			<span class="glyphicon glyphicon-plus"></span>
 		</button>
 	</section>

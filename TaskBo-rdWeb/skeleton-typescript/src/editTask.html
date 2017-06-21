@@ -1,34 +1,41 @@
 <template>
 	<require from="./components/datepicker"></require>
-	<section class="au-animate">
+	<section class="edit-task au-animate">
 		<div class="container">
 			<h2>Edit task with id: ${task.id}</h2>
-
-			<label for="taskName">Name: </label>
-			<input type="text" class="form-control" value.bind="task.name" placeholder="task.name">
-			<label for="taskDescr">Description: </label>
-			<input type="text" class="form-control" value.bind="task.description" placeholder="task.description">
-			<label for="taskAssignees">Assigned to: </label>
-			<div repeat.for="currAssignie of assigniees">
-				${currAssignie}
-				<button class="btn btn-default glyphicon glyphicon-trash" click.delegate='removeAssignie(currAssignie)'></button>
+			<div class="edit-task-info">
+				<label for="taskName">Name: </label>
+				<input type="text" class="form-control" value.bind="task.name" placeholder="task.name">
+				<label for="taskDescr">Description: </label>
+				<input type="text" class="form-control" value.bind="task.description" placeholder="task.description">
+			</div>
+			</br>
+			<div class="assignees">
+				<label for="taskAssignees">Assigned to: </label>
+				<ul class="list-unstyled">
+					<li class="curr" repeat.for="currAssignie of assigniees">
+						<span>${currAssignie}</span>
+						<button class="btn btn-danger glyphicon glyphicon-trash" click.trigger='removeAssignie(currAssignie)'></button>
+					</li>
+				</ul>
+			</div>
+			<div class="add-user">
+				<auto-complete items.bind="groupUsers" result.two-way="selected"></auto-complete>
+				<button class="btn btn-success glyphicon glyphicon-plus" click.trigger='addUser()'></button>
+			</div>
+			<!--<div class="due-to">
+				<label for="taskDueTo">DueTo: </label>
+				<div>${task.dueTo}</div>
+			</div>-->
+			<div class="checkboxes" repeat.for="checkbox of checkboxes">
+				<div>
+					<input class="form-control" type="type" value.bind="checkbox.name" placeholder="checkbox.name">
+					<button class="btn btn-danger glyphicon glyphicon-trash" click.trigger='removeCheck(checkbox)'></button>
+				</div>
 			</div>
 
-			<auto-complete items.bind="groupUsers" result.two-way="selected"></auto-complete>
-			<button class="btn btn-default glyphicon glyphicon-plus" click.delegate='addUser()'></button>
-			
-			<label for="taskDueTo">DueTo: </label>
-			<div>${task.dueTo}</div>
-
-			<div repeat.for="checkbox of checkboxes">
-				<label>
-					<input type="type" value.bind="checkbox.name" placeholder="checkbox.name">
-					<button class="btn btn-default glyphicon glyphicon-trash" click.delegate='removeCheck(checkbox)'></button>
-				</label>
-			</div>
-
-			<button class="btn btn-default glyphicon glyphicon-save" click.delegate='saveTask()'></button>
-			<button class="btn btn-default glyphicon glyphicon-remove" click.delegate='endTask()'></button>
+			<button class="save-task btn btn-primary fa fa-send" click.trigger='saveTask()'></button>
+			<button class="cancel-task btn btn-warning fa fa-remove" click.trigger='endTask()'></button>
 
 	</section>
 </template>

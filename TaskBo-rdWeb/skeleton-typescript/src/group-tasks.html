@@ -1,10 +1,8 @@
 <template>
 	<require from="./components/datepicker"></require>
-	<section class="au-animate">
+	<section class="au-animate" id="group-tasks">
 		<div class="container">
 			<h2>${heading}</h2>
-			
-
 			<table class="table table-hover">
 				<thead class="thead-inverse">
 					<tr>
@@ -16,13 +14,13 @@
 				</thead>
 				<tbody>
 					<tr repeat.for='task of tasks'>
-            			<td click.delegate='navigateToTask(task.issueUID)'>${task.issueUID}</td>
-           				<td click.delegate='navigateToTask(task.issueUID)'>${task.name}</td>
-						<td click.delegate='navigateToTask(task.issueUID)'>${task.description}</td>
-						<td><button class="btn btn-default glyphicon glyphicon-edit" click.delegate='editTask(task.issueUID)'></button></td>
+            			<td click.trigger='navigateToTask(task.issueUID)'>${task.issueUID}</td>
+           				<td click.trigger='navigateToTask(task.issueUID)'>${task.name}</td>
+						<td click.trigger='navigateToTask(task.issueUID)'>${task.description}</td>
+						<td><button class="btn btn-sm btn-primary glyphicon glyphicon-pencil" click.trigger='editTask(task.issueUID)'></button></td>
 					</tr>
-					<tr><td><button class="btn btn-default glyphicon glyphicon-plus" click.delegate='addTask(task.issueUID)'></button></td></tr>
 				</tbody>
 			</table>
+			<button class="btn btn-success fa fa-plus" click.trigger='addTask(task.issueUID)'></button>
 	</section>
 </template>

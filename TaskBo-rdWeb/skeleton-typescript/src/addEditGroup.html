@@ -3,20 +3,20 @@
 		<div class="container">
 			<h2>Edit group ${group.name}</h2>
 			<label for="groupName">Name: </label>
-			<input type="text" class="form-control" value.bind="group.name" placeholder="group.name">
+			<input type="text" class="form-control" value.bind="group.name" placeholder="group.name"><br>
 			<label for="groupDescr">Description: </label>
-			<input type="text" class="form-control" value.bind="group.description" placeholder="group.description">
+			<input type="text" class="form-control" value.bind="group.description" placeholder="group.description"><br>
 			<label for="GroupUsers">Users: </label>
-			<div repeat.for="currUser of groupUsers">
-				${currUser.name}
-				<button class="btn btn-default glyphicon glyphicon-trash" click.delegate='removeUser(currUser)'></button>
-			</div>
-
-
+			<ul class="curr list-unstyled">
+				<li repeat.for="currUser of groupUsers">
+					<span>${currUser.name}</span>
+					<button class="btn btn-danger fa fa-trash" click.trigger='removeUser(currUser)'></button>
+				</li>
+			</ul>
 			<auto-complete items.bind="allUsers" result.two-way="selected"></auto-complete>
-			<button class="btn btn-default glyphicon glyphicon-plus" click.delegate='addUser()'></button>
-            
-			<button class="btn btn-default glyphicon glyphicon-save" click.delegate='saveGroup()'></button>
-			<button class="btn btn-default glyphicon glyphicon-remove" click.delegate='endEdit()'></button>
+			<button class="btn btn-success glyphicon glyphicon-plus" click.trigger='addUser()'></button>
+            <br>
+			<button class="btn btn-primary fa fa-send save-task" click.trigger='saveGroup()'></button>
+			<button class="btn btn-warning fa fa-remove cancel-task" click.trigger='endEdit()'></button>
 	</section>
 </template>
