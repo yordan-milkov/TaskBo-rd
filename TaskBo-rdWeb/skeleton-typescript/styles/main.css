@@ -1,0 +1,166 @@
+#login input {
+    margin-bottom:10px;
+}
+
+#home .list-group{
+        width:100%;
+}
+
+#group-tasks .table td {
+    vertical-align: middle;
+    padding: 5px;
+}
+
+#group-tasks .fa-plus {
+    width:100%;
+    margin-top:10px;
+}
+
+#home .list-group .btn-primary{
+        width:20%;
+}
+
+
+#home .list-group .btn-default
+{       color: #5cb85c;
+        width:70%;
+}
+
+#home .list-group .btn-default
+{       color: #5cb85c;
+        width:70%;
+}
+
+#add-group {
+    width:100%;
+}
+
+body h2 {
+    color: #5cb85c;
+}
+
+#task div {
+    display:inline-block;
+}
+
+
+#task .newCheck {
+    display:inline-block;
+    width: auto;
+}
+
+#task .checkboxes {
+    display: block;
+}
+
+#task .checkboxes label input{
+    margin-right:5px;
+}
+
+#task .container {
+    width:100%;
+}
+
+.task-info {
+    width:100%;
+}
+
+.task-info .list-unstyled {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 10px;
+    font-style: italic;
+}
+
+#task .task-info div {
+    padding-left: 10px;
+    width:69%;    
+}
+
+#task .fa-edit {
+    margin-top:5px;
+    width:50%;  
+}
+
+#task .task-info label {
+    width:30%;
+    text-align: right;
+    
+}
+
+.edit-task-info label {
+    width: 20%;
+    padding-right: 10px;
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+.edit-task-info input {
+    width: 70%;
+    display: inline-block;
+    margin-bottom: 5px;
+    
+}
+    
+.edit-task .assignees  {
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 5px;
+}
+
+.edit-task .assignees label,.edit-task .assignees div  {
+    margin-bottom:5px;
+}
+
+.edit-task .assignees label,.edit-task .assignees .curr  {
+    width: 100%;
+}
+
+.curr span  {
+    width:70%;
+    display: inline-block;
+}
+.edit-task .add-user {}
+ auto-complete {
+    width: 70%;
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 10px;
+}
+
+.edit-task .add-user button {
+    width: 25%;
+    display: inline-block;
+}
+
+.edit-task .checkboxes div {
+    margin-bottom:4px;
+}
+
+.add-user { 
+    border-bottom:1px solid lightgray;
+    margin-bottom:10px;
+    padding-bottom:5px;
+}
+
+.edit-task .checkboxes input {
+    width: 70%;
+    display:inline-block;
+}
+
+.edit-task .checkboxes button {
+    display:inline-block;
+}
+
+.cancel-task, .save-task {
+    margin-top:10px;
+    width:48%;
+}
+
+.user-profile label {
+    width:55%;
+}
+
+.user-profile div {
+   display:inline-block;
+}

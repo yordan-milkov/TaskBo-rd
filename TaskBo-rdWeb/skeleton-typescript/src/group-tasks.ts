@@ -9,6 +9,7 @@ export class Tasks
     private connection: ConnectionManager;
     groupUID: any;
     tasks: any[]; //received array of group's tasks
+    heading: string;
     constructor(router, connection)
     {
         this.connection = connection;
@@ -42,7 +43,7 @@ export class Tasks
             }
             );
         console.log(this.tasks);
-        // this.heading = 'Group with UID: ' + ;
+        this.heading = 'Group with UID: ' + this.groupUID;
     }
 
     navigateToTask(params)

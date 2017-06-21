@@ -1,15 +1,13 @@
 <template>
-	<section class="au-animate">
+	<section class="au-animate user-profile">
 		<div class="container">
 			<h2>User Profile: ${user.name}</h2>
-			<label for="userUID">User name: </label>
-			<div>${user.UID}</div>
+			<label for="userUID">Username: </label>
+			<div>${user.UID}</div><br>
 			<label for="userEmail">Email: </label>
-			<div>${user.mail}</div>
+			<div>${user.mail}</div><br>
 			<label for="taskDueTo">GSM: </label>
-			<div>${user.GSM}</div>
-
-
-			<button class="btn btn-default glyphicon glyphicon-edit" click.delegate='editUser()'></button>
+			<div>${user.GSM}</div><br>
+			<button class="btn btn-primary fa fa-pencil" click.trigger='editUser()'></button>
 	</section>
 </template>

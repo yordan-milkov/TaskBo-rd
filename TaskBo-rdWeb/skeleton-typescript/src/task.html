@@ -1,32 +1,34 @@
 <template>
 	<require from="./components/datepicker"></require>
-	<section class="au-animate">
+	<section class="au-animate" id="task">
 		<div class="container">
 			<h2>View task with id: ${task.issueUID}</h2>
-			<label for="taskName">Name: </label>
-			<div>${task.name}</div>
-			<label for="taskDescr">Description: </label>
-			<div>${task.description}</div>
-			<label for="taskAssignees">Assigned to: </label>
-			<div repeat.for="currAssignie of assigniees">
-				${currAssignie}
+			<div class="task-info">
+				<label for="taskName">Name: </label>
+				<div>${task.name}</div><br>
+				<label for="taskDescr">Description: </label>
+				<div>${task.description}</div><br>
+				<label for="taskAssignees">Assigned to: </label>
+				<ul class="list-unstyled">
+					<li repeat.for="currAssignie of assigniees">${currAssignie}</li>
+				</ul>
 			</div>
 			<label for="taskDueTo">DueTo: </label>
 			<div>${task.dueTo}</div>
-
 			<div repeat.for="currCheck of checkboxes">
-				<label>
+				<div class="checkboxes" repeat.for="currCheck of checkboxes">
+					<label>
 					<input	type="checkbox"
 							checked.bind="currCheck.isFinished"
 							model.bind="currCheck.isFinished"
-							change.delegate="onCheckboxChanged($event.target.checked, currCheck.checkUID)"
+							change.trigger="onCheckboxChanged($event.target.checked, currCheck.checkUID)"
 					>${currCheck.name}
 				</label>
-			</div>
-			
-			<input type="text" class="form-control" value.bind="newCheck" placeholder="newCheck">
-			<button class="btn btn-default glyphicon glyphicon-plus" click.delegate='addCheck()'></button>
-
-			<button class="btn btn-default glyphicon glyphicon-edit" click.delegate='editTask(task.issueUID)'></button>
+					</br>
+				</div>
+				</br>
+				<input type="text" class="form-control newCheck" value.bind="newCheck" placeholder="newCheck">
+				<button class="btn btn-warning fa fa-plus" click.trigger='addCheck()'></button></br>
+				<button class="btn btn-primary fa fa-pencil" click.trigger='editTask(task.issueUID)'></button>
 	</section>
 </template>
