@@ -8,7 +8,6 @@ export class Login
     private aurelia: Aurelia;
     private connection: ConnectionManager;
 
-    isLoggedIn: boolean;
     username: string = "";
     password: string = "";
 
@@ -16,7 +15,6 @@ export class Login
     {
         this.aurelia = aurelia;
         this.connection = connectionManager;
-        this.isLoggedIn = false;
         localStorage.clear();
     }
 

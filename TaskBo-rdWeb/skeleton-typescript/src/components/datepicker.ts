@@ -1,64 +1,64 @@
-import { customElement, bindable, inject, DOM } from 'aurelia-framework';
-import "jquery";
-import "jquery-ui";
+// import { customElement, bindable, inject, DOM } from 'aurelia-framework';
+// import "jquery";
+// import "jquery-ui";
 
-@customElement('datepicker')
-@inject(DOM.Element)
-export class Datepicker {
-    @bindable id = '';
-    @bindable name = '';
-    @bindable options = {};
-    element;
+// @customElement('datepicker')
+// @inject(DOM.Element)
+// export class Datepicker {
+//     @bindable id = '';
+//     @bindable name = '';
+//     @bindable options = {};
+//     element;
 
-    constructor(Element) {
-        this.element = Element;
+//     constructor(Element) {
+//         this.element = Element;
 
-        if (!this.id && this.name) {
-            this.id = this.name;
-        }
+//         if (!this.id && this.name) {
+//             this.id = this.name;
+//         }
 
-        if (!this.name && this.id) {
-            this.name = this.id;
-        }
-    }
+//         if (!this.name && this.id) {
+//             this.name = this.id;
+//         }
+//     }
 
-    attached() {
+//     attached() {
 
-        var dateFormat = "mm/dd/yy",
-            from = (<any>$("#from"))
-                .datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 1
-                })
-                .on("change", function (e) {
-                    to.datepicker("option", "minDate", getDate(this));
-                    // console.log(getDate(this));
-                }),
+//         var dateFormat = "mm/dd/yy",
+//             from = (<any>$("#from"))
+//                 .datepicker({
+//                     defaultDate: "+1w",
+//                     changeMonth: true,
+//                     numberOfMonths: 1
+//                 })
+//                 .on("change", function (e) {
+//                     to.datepicker("option", "minDate", getDate(this));
+//                     // console.log(getDate(this));
+//                 }),
 
-            to = (<any>$("#to")).datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                numberOfMonths: 1
-            })
-                .on("change", function (e) {
-                    from.datepicker("option", "maxDate", getDate(this));
+//             to = (<any>$("#to")).datepicker({
+//                 defaultDate: "+1w",
+//                 changeMonth: true,
+//                 numberOfMonths: 1
+//             })
+//                 .on("change", function (e) {
+//                     from.datepicker("option", "maxDate", getDate(this));
 
-                });
+//                 });
 
-        function getDate(element) {
-            var date;
-            try {
-                date = (<any>$).datepicker.parseDate(dateFormat, element.value);
-            } catch (error) {
-                date = null;
-            }
+//         function getDate(element) {
+//             var date;
+//             try {
+//                 date = (<any>$).datepicker.parseDate(dateFormat, element.value);
+//             } catch (error) {
+//                 date = null;
+//             }
 
-            return date;
-        }
-    }
+//             return date;
+//         }
+//     }
 
-    detached() {
-        (<any>$(`#${this.id}`)).datepicker('destroy').off('change');
-    }
-}
+//     detached() {
+//         (<any>$(`#${this.id}`)).datepicker('destroy').off('change');
+//     }
+// }

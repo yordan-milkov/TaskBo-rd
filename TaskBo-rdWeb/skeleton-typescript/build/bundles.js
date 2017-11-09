@@ -30,7 +30,13 @@ module.exports = {
         "bootstrap",
         "bootstrap/css/bootstrap.css!text",
         "fetch",
-        "jquery"
+        "jquery",
+        "aurelia-dialog",
+        "aurelia-autocomplete",
+        "aurelia-autocomplete/component/bootstrap/autocomplete.html!text",
+        "text",
+        "aurelia-http-client",
+        //"./styles/main.css!text"
       ],
       "options": {
         "inject": true,

@@ -3,7 +3,7 @@
 	<section class="au-animate" id="task">
 		<div class="container">
 			<h2>View task with id: ${task.issueUID}
-				<button class="btn btn-primary fa fa-flag-checkered" click.trigger='editTask(task.issueUID)'></button>
+				<button class="btn btn-${btnColor} fa fa-${btnImage}" click.trigger='resolveIssue()'></button>
 			</h2>	
 			<div class="task-info">
 				<label for="taskName">Name: </label>

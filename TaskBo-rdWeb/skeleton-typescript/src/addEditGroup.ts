@@ -3,6 +3,7 @@ import { Router, RouterConfiguration } from 'aurelia-router';
 import { DialogService } from 'aurelia-dialog';
 import { ConnectionManager } from './ConnectionManager';
 import { Confirm } from './confirmModal';
+import {} from ''
 
 @inject(Router, ConnectionManager, DialogService)
 export class AddEditGroup

@@ -14,6 +14,8 @@ export class Task
     protected checkboxes: any;
     protected assigniees: Array<string>;
     protected groupUsers: any;
+    protected btnColor :any;
+    protected btnImage :any;
     private newCheck: any;
     constructor(router: Router, connect: ConnectionManager)
     {
@@ -50,7 +52,7 @@ export class Task
                 this.heading = 'Task: ' + this.task.name;
                 this.task.isResolved = this.task.isResolved == 1 ? true : false;
                 console.log(this.task);
-
+                this.setResolveButton()
                 this.fillGroupUsers( this.task.groupUID )
             }
             );
@@ -70,6 +72,7 @@ export class Task
                 this.checkboxes = JSON.parse(data.response);
                 for (let item of this.checkboxes) {
                     item.isFinished = item.isFinished == 1 ? true : false;
+                    
                 }
                 console.log(this.checkboxes);
             }
@@ -119,5 +122,26 @@ export class Task
                 }
             }
         }
+    }
+
+    setResolveButton()
+    {
+        if ( this.task.isResolved )
+        {
+            this.btnColor = 'danger';
+            this.btnImage = 'flag';
+        }
+        else
+        {
+            this.btnColor = 'sucess';
+            this.btnImage = 'flag-checkered';
+        }
+    }
+
+    resolveIssue()
+    {
+        this.task.isResolved = !this.task.isResolved;
+        this.connect.updateResolveState( this.task.isResolved, this.task.issueUID );
+        this.setResolveButton();
     }
 }

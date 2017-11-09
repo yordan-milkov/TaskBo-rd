@@ -9,7 +9,7 @@ export class ConnectionManager
         this.httpClient = new HttpClient()
             .configure((x: any) =>
             {
-                x.withBaseUrl('http://localhost/TaskBo-rdWebServer/php/');
+                x.withBaseUrl('http://78.90.20.71:27011/php/');
                 x.withHeader("Content-type", " application/x-www-form-urlencoded");
             });
     }
@@ -77,6 +77,11 @@ export class ConnectionManager
             .asGet()
             .withParams({ 'issueUID': taskID })
             .send();
+    }
+
+    updateResolveState(isChecked: boolean, issueUID: string)
+    {
+        return this.httpClient.post('issue-resolve.php', `isResolved=${isChecked?1:0}&issueUID=${issueUID}`);
     }
     
     getTaskChecks(taskID: string) : any
