@@ -105,7 +105,7 @@ export class EditTask extends Task
     removeCheck(checkData: any)
     {
         this.dlg.open({ viewModel: Confirm, model: 'Do you want to delete this check box:' + checkData.name })
-            .then(response =>
+            .whenClosed(response =>
             {
                 if (!response.wasCancelled) {
                     let index = this.checkboxes.findIndex(element => element.checkUID === checkData.checkUID);

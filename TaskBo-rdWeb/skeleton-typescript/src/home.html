@@ -2,7 +2,7 @@
 	<section id="home" class="au-animate">
 		<h2>${heading}</h2>
 		<div class="list-group" repeat.for="group of groups">
-			<button class="btn btn-default" click.trigger='navigateToTasks(group.groupUID)'>${group.name}</button>
+			<button class="btn btn-default" click.trigger='navigateToTasks(group.groupUID)'><b>${group.name}</b><br><i>${group.description}</i></button>
 			<button class="btn btn-primary fa fa-pencil" title="Edit" click.trigger='editGroup(group.groupUID)'></button>
 		</div>
 		<button class="btn btn-success" id="add-group" title="Add group" click.trigger="addGroup()">
