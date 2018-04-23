@@ -48,7 +48,7 @@
     "gulp-tslint": "^6.0.2",
     "gulp-typescript": "^2.13.6",
     "isparta": "^4.0.0",
-    "jspm": "^0.16.41",
+    "jspm": "^0.16.53",
     "object.assign": "^4.0.4",
     "require-dir": "^0.3.0",
     "rimraf": "^2.5.4",
@@ -78,7 +78,6 @@
       "aurelia-templating-binding": "npm:aurelia-templating-binding@^1.0.0-rc.1.0.0",
       "aurelia-templating-resources": "npm:aurelia-templating-resources@^1.0.0-rc.1.0.0",
       "aurelia-templating-router": "npm:aurelia-templating-router@^1.0.0-rc.1.0.0",
-      "bluebird": "npm:bluebird@3.4.1",
       "bootstrap": "github:twbs/bootstrap@^3.3.6",
       "fetch": "github:github/fetch@^1.0.0",
       "font-awesome": "npm:font-awesome@4.6.3",
@@ -91,5 +90,9 @@
       "babel-runtime": "npm:babel-runtime@^5.8.24",
       "core-js": "npm:core-js@^1.1.4"
     }
+  },
+  "dependencies": {
+    "gulp-install": "^1.1.0",
+    "jquery": "^3.3.1"
   }
 }

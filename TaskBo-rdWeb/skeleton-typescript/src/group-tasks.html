@@ -6,17 +6,19 @@
 			<table class="table table-hover">
 				<thead class="thead-inverse">
 					<tr>
-						<th>UID</th>
-						<th>Task Name</th>
-						<th>Description</th>
+						<th click.trigger='sortUID()'>ID</th>
+						<th click.trigger='sortName()'>Task Name</th>
+						<th click.trigger='sortDesc()'>Description</th>
+						<th click.trigger='sortResolve()'>Resolved</th>
 						<th>Edit</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr repeat.for='task of tasks'>
-            			<td click.trigger='navigateToTask(task.issueUID)'>${task.issueUID}</td>
-           				<td click.trigger='navigateToTask(task.issueUID)'>${task.name}</td>
+						<td click.trigger='navigateToTask(task.issueUID)'>${task.issueUID}</td>
+						<td click.trigger='navigateToTask(task.issueUID)'>${task.name}</td>
 						<td click.trigger='navigateToTask(task.issueUID)'>${task.description}</td>
+            			<td><button class="btn btn-${getColor(task.isResolved)} fa fa-${getFlag(task.isResolved)}" click.trigger='resolveIssue(task)'></button></td>
 						<td><button class="btn btn-sm btn-primary glyphicon glyphicon-pencil" click.trigger='editTask(task.issueUID)'></button></td>
 					</tr>
 				</tbody>

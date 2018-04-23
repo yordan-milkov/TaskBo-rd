@@ -6,10 +6,17 @@
             <h2><i class="fa fa-hand-peace-o" aria-hidden="true"></i> TaskBo-rd</h2>
         </div>
         <div class="panel-body">
+            <h3>Existing user:</h3>
             <input type="text" class="form-control" value.bind="username" placeholder="username">
             <input type="text" class="form-control" value.bind="password" placeholder="password">
 
             <button class="btn btn-success" click.trigger="login()">Login</button>
+        </div>
+        <div class="panel-body">
+            <h3>Register:</h3>
+            <input type="text" class="form-control" value.bind="newUser" placeholder="newUser">
+
+            <button class="btn btn-success" click.trigger="register()">Register</button>
         </div>
     </div>
 </template>

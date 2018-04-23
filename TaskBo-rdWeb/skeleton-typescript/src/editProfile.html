@@ -1,0 +1,22 @@
+<template>
+	<section class="edit-task au-animate">
+		<div class="edit-task-info">
+			<h2>User Profile ID: ${user.UID}</h2>
+			<label for="userName">Name: </label>
+			<input type="text" class="form-control" value.bind="user.name" placeholder="user.name">
+			<label for="userEmail">Email: </label>
+			<input type="text" class="form-control" value.bind="user.mail" placeholder="user.mail">
+			<label for="userGSM">Phone number: </label>
+			<input type="text" class="form-control" value.bind="user.GSM" placeholder="user.GSM">
+			<h2>Change password:</h2>
+			<label for="oldPass">Old password: </label>
+			<input type="text" class="form-control" value.bind="user.oldPass" placeholder="user.oldPass">
+			<label for="newPass">New password: </label>
+			<input type="text" class="form-control" value.bind="user.newPass" placeholder="user.newPass">
+			<label for="repeatPass">Repeat password: </label>
+			<input type="text" class="form-control" value.bind="user.repeatPass" placeholder="user.repeatPass">
+			<button class="save-task btn btn-primary fa fa-send" click.trigger='updateProfile()'></button>
+			<button class="cancel-task btn btn-warning fa fa-remove" click.trigger='endEdit()'></button>
+		</div>
+	</section>
+</template>

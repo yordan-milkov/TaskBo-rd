@@ -8,7 +8,7 @@ export class App {
     config.map([
       { route: ['', 'home'], name: 'home', moduleId: 'home', nav: true, title: 'Home'  },
       { route: 'profile', name: 'profile', moduleId: 'profile', nav: true, title: 'Profile', href: 'profile' },
-      { route: 'logout', name: 'Logout', moduleId: 'Logout', nav: true, title: 'Log Out', href: 'LogOut' },
+      { route: 'logout', name: 'Logout', moduleId: 'logout', nav: true, title: 'Log Out', href: 'LogOut' },
       { route: 'editProfile', name: 'editProfile', moduleId: 'editProfile', nav: false, title: 'Edit Profile', href: 'editProfile' },
       { route: 'addEditGroup/:id', name: 'addEditGroup', moduleId: 'addEditGroup', nav: false, title: 'Edit Group', href: 'addEditGroup' },
       { route: 'group-tasks/:id', name: 'group-tasks', moduleId: 'group-tasks', nav: false, title: 'Tasks by group', href: 'group-tasks' },
@@ -17,5 +17,6 @@ export class App {
     ]);
 
     this.router = router;
+    this.router.navigate('/');
   }
 }

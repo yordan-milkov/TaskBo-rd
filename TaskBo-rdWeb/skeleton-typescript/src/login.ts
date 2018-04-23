@@ -10,6 +10,7 @@ export class Login
 
     username: string = "";
     password: string = "";
+    newUser: string = "";
 
     constructor(aurelia: Aurelia, connectionManager: ConnectionManager)
     {
@@ -28,7 +29,36 @@ export class Login
                 localStorage.setItem( 'mail', userData.mail );
                 localStorage.setItem( 'name', userData.name );
                 localStorage.setItem( 'GSM', userData.GSM );
-                this.aurelia.setRoot('app');
+                localStorage.setItem( 'key', this.password );
+                this.aurelia.setRoot( 'app' );
             });
+    }
+
+    register()
+    {
+        if ( this.newUser )
+        {
+            this.connection.checkUser(this.newUser)
+                .then((data) => {
+                    if ( data.response === 'Register!' )
+                    {
+                        localStorage.setItem( 'UID', this.newUser );
+                        this.aurelia.setRoot( 'register' );
+                    }
+                    else
+                    {
+                        console.log( 'name exists' )
+                        console.log( data )
+                    }
+                    // let userData = JSON.parse(data.response);
+                    // localStorage.setItem( 'mail', userData.mail );
+                    // localStorage.setItem( 'name', userData.name );
+                    // localStorage.setItem( 'GSM', userData.GSM );
+                    // this.aurelia.setRoot('app');
+                });
+        }
+        else{
+            console.log( 'set name' )
+        }
     }
 }

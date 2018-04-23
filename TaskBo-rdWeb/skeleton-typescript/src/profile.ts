@@ -28,4 +28,9 @@ export class Task
         this.user.mail  = localStorage.getItem( 'mail' );
         this.user.GSM   = localStorage.getItem( 'GSM' );
     }
+
+    editUser()
+    {
+        this.router.navigate('editProfile')
+    }
 }

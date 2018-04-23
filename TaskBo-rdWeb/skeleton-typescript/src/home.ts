@@ -20,14 +20,14 @@ export class Home
   {
     if (localStorage.getItem('UID') != null )
     {
-      this.connection.getGroupsByUID(localStorage.getItem('UID'))
+      this.connection.getGroupsByUserID(localStorage.getItem('UID'))
       .then(
       (data: any) =>
       {
         let result = JSON.parse(data.response);
         console.log( result );
         this.groups = result;
-      }
+      } 
       );
     }
   }

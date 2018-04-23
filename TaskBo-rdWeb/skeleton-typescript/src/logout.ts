@@ -14,10 +14,13 @@ export class Logout
         this.router = router;
     }
 
-    public activate()
+    public attached()
     {
         localStorage.clear();
         this.router.navigate('/');
-        this.aurelia.setRoot('login');
+    }
+
+    public detached () {
+        location.reload();          
     }
 }
