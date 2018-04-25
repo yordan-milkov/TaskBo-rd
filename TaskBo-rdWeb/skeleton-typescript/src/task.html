@@ -4,7 +4,8 @@
 		<div class="container">
 			<h2>View task with id: ${task.issueUID}
 				<button class="btn btn-${btnColor} fa fa-${btnImage}" click.trigger='resolveIssue()'></button>
-			</h2>	
+				<button class="btn btn-primary fa fa-pencil" title="dasdad" click.trigger='editTask(task.issueUID)'></button>
+			</h2>
 			<div class="task-info">
 				<label for="taskName">Name: </label>
 				<div>${task.name}</div><br>
@@ -14,20 +15,18 @@
 				<ul class="list-unstyled">
 					<li repeat.for="currAssignie of assigniees">${currAssignie}</li>
 				</ul>
-			</div>
-				<div class="checkboxes" repeat.for="currCheck of checkboxes">
-					<label>
-					<input	type="checkbox"
-							checked.bind="currCheck.isFinished"
-							model.bind="currCheck.isFinished"
-							change.trigger="onCheckboxChanged($event.target.checked, currCheck.checkUID)"
-					>${currCheck.name}
+			</div>	
+			<h3>Checklist:</h3>		
+			<div class="checkboxes" repeat.for="currCheck of checkboxes">
+				<label>
+					<input type="checkbox" checked.bind="currCheck.isFinished" model.bind="currCheck.isFinished" change.trigger="onCheckboxChanged($event.target.checked, currCheck.checkUID)">${currCheck.name}
 				</label>
-					</br>
-				</div>
 				</br>
-				<input type="text" class="form-control newCheck" value.bind="newCheck" placeholder="newCheck">
-				<button class="btn btn-warning fa fa-plus" click.trigger='addCheck()'></button></br>
-				<button class="btn btn-primary fa fa-pencil" click.trigger='editTask(task.issueUID)'></button>
+			</div>
+			<h3>Add new item to checklist:</h3>
+			<input type="text" class="form-control input-sm newCheck" value.bind="newCheck" placeholder="newCheck">
+			<button class="btn  btn-sm btn-warning fa fa-plus" click.trigger='addCheck()'></button>
+			</br><br>
+			
 	</section>
 </template>

@@ -1,22 +1,28 @@
 <template>
     <require from="bootstrap/css/bootstrap.css"></require>
+    <div validation-errors.bind="errors">
+        <div id="login" class="panel panel-success">
+            <div class="panel-heading">
+                <h2>
+                    <i class="fa fa-hand-peace-o" aria-hidden="true"></i> TaskBo-rd</h2>
+            </div>
+            <div class="panel-body">
+                <h3>Existing user:</h3>
+                <input type="text" class="form-control" value.bind="username" placeholder="Username">
+                <input type="password" class="form-control" value.bind="password & validate" placeholder="Password">
+                <ul if.bind="controller.errors">
+                    <li class="alert alert-danger" repeat.for="error of controller.errors">
+                        ${error.message}
+                    </li>
+                </ul>
+                <button class="btn btn-success" click.trigger="login()">Login</button>
+            </div>
+            <div class="panel-body">
+                <h3>Register:</h3>
+                <input type="text" class="form-control" value.bind="newUser & validate" placeholder="Set username">
 
-    <div id="login" class="panel panel-success">
-        <div class="panel-heading">
-            <h2><i class="fa fa-hand-peace-o" aria-hidden="true"></i> TaskBo-rd</h2>
-        </div>
-        <div class="panel-body">
-            <h3>Existing user:</h3>
-            <input type="text" class="form-control" value.bind="username" placeholder="username">
-            <input type="text" class="form-control" value.bind="password" placeholder="password">
-
-            <button class="btn btn-success" click.trigger="login()">Login</button>
-        </div>
-        <div class="panel-body">
-            <h3>Register:</h3>
-            <input type="text" class="form-control" value.bind="newUser" placeholder="newUser">
-
-            <button class="btn btn-success" click.trigger="register()">Register</button>
+                <button class="btn btn-success" click.trigger="register()">Register</button>
+            </div>
         </div>
     </div>
 </template>

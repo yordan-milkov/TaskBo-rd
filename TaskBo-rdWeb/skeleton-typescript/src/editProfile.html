@@ -3,18 +3,22 @@
 		<div class="edit-task-info">
 			<h2>User Profile ID: ${user.UID}</h2>
 			<label for="userName">Name: </label>
-			<input type="text" class="form-control" value.bind="user.name" placeholder="user.name">
+			<input type="text" class="form-control" value.bind="user.name" placeholder="user.name"><br>
 			<label for="userEmail">Email: </label>
-			<input type="text" class="form-control" value.bind="user.mail" placeholder="user.mail">
+			<input type="text" class="form-control" value.bind="user.mail" placeholder="user.mail"><br>
 			<label for="userGSM">Phone number: </label>
-			<input type="text" class="form-control" value.bind="user.GSM" placeholder="user.GSM">
+			<input type="text" class="form-control" value.bind="user.GSM" placeholder="user.GSM"><br>
 			<h2>Change password:</h2>
 			<label for="oldPass">Old password: </label>
-			<input type="text" class="form-control" value.bind="user.oldPass" placeholder="user.oldPass">
+			<input type="password" class="form-control" value.bind="user.oldPass" placeholder="user.oldPass"><br>
 			<label for="newPass">New password: </label>
-			<input type="text" class="form-control" value.bind="user.newPass" placeholder="user.newPass">
+			<input type="password" class="form-control" value.bind="user.newPass" placeholder="user.newPass"><br>
 			<label for="repeatPass">Repeat password: </label>
-			<input type="text" class="form-control" value.bind="user.repeatPass" placeholder="user.repeatPass">
+			<input type="password" class="form-control" value.bind="user.repeatPass" placeholder="user.repeatPass"><ul if.bind="controller.errors">
+                    <li class="alert alert-danger" repeat.for="error of controller.errors">
+                        ${error.message}
+                    </li>
+                </ul>
 			<button class="save-task btn btn-primary fa fa-send" click.trigger='updateProfile()'></button>
 			<button class="cancel-task btn btn-warning fa fa-remove" click.trigger='endEdit()'></button>
 		</div>

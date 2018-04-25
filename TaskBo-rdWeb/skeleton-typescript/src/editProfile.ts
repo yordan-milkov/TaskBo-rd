@@ -3,15 +3,16 @@ import { Router, RouterConfiguration } from 'aurelia-router';
 import { ConnectionManager } from './ConnectionManager';
 import { Register } from './register';
 import {Aurelia} from 'aurelia-framework';
+import {ValidationControllerFactory, ValidationRules, ValidationController  } from 'aurelia-validation';
 
-@inject(Aurelia, Router, ConnectionManager)
+@inject(Aurelia, Router, ConnectionManager,ValidationControllerFactory)
 export class EditProfile extends Register
 {
     protected router: Router;
 
-    constructor(aurelia: Aurelia, router: Router, connect: ConnectionManager)
+    constructor(aurelia: Aurelia, router: Router, connect: ConnectionManager,  validate:ValidationControllerFactory)
     {
-        super(aurelia, connect);
+        super(aurelia, connect, validate);
         this.router = router;
         // this.router = router;
         // this.connect = connect;
@@ -50,6 +51,7 @@ export class EditProfile extends Register
 
     updateProfile()
     {
+        this.controller.reset();
         if ( String(this.user.newPass) === String(this.user.repeatPass) )
         {
             if ( ! String(this.user.newPass) )
@@ -70,6 +72,7 @@ export class EditProfile extends Register
                         }
                         else
                         {
+                            this.controller.addError('Old password is wrong.', 'password')
                             console.log( data )
                         }
                     }
@@ -79,7 +82,7 @@ export class EditProfile extends Register
         }
         else
         {
-            console.log( 'new password doen\'t match' )
+            this.controller.addError('New password doen\'t match.', 'password')
         }
     }
 

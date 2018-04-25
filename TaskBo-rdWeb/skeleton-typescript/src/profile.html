@@ -1,13 +1,12 @@
 <template>
-	<section class="au-animate user-profile">
-		<div class="container">
-			<h2>User Profile: ${user.name}</h2>
+	<section class="user-profile">
+		<div class="container edit-profile">
+			<h2>User Profile: ${user.name} 	<button class="btn btn-primary fa fa-pencil" click.trigger='editUser()'></button></h2>
 			<label for="userUID">Username: </label>
 			<div>${user.UID}</div><br>
 			<label for="userEmail">Email: </label>
 			<div>${user.mail}</div><br>
 			<label for="userGSM">Phone number: </label>
-			<div>${user.GSM}</div><br>
-			<button class="btn btn-primary fa fa-pencil" click.trigger='editUser()'></button>
+			<div>${user.GSM}</div><br>		
 	</section>
 </template>

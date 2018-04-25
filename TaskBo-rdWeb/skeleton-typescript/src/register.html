@@ -13,9 +13,14 @@
 			<input type="text" class="form-control" value.bind="user.GSM" placeholder="user.GSM">
 			<h2>Set password:</h2>
 			<label for="newPass">New password: </label>
-			<input type="text" class="form-control" value.bind="user.newPass" placeholder="user.newPass">
+			<input type="password" class="form-control" value.bind="user.newPass" placeholder="user.newPass">
 			<label for="repeatPass">Repeat password: </label>
-			<input type="text" class="form-control" value.bind="user.repeatPass" placeholder="user.repeatPass">
+			<input type="password" class="form-control" value.bind="user.repeatPass" placeholder="user.repeatPass">
+			<ul if.bind="controller.errors">
+                    <li class="alert alert-danger" repeat.for="error of controller.errors">
+                        ${error.message}
+                    </li>
+                </ul>
 			<button class="save-task btn btn-primary fa fa-send" click.trigger='saveProfile()'></button>
 			<button class="cancel-task btn btn-warning fa fa-remove" click.trigger='endEdit()'></button>
 			</div>

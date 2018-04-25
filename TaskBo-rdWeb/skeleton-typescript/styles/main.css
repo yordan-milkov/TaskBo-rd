@@ -83,15 +83,11 @@ body h2 {
 }
 
 #task .task-info label {
-    width:30%;
-    text-align: right;
-    
+    width:100px;    
 }
 
 .edit-task-info label {
-    width: 20%;
-    padding-right: 10px;
-    text-align: right;
+    width:190px;   
     margin-bottom: 5px;
 }
 
@@ -116,6 +112,10 @@ body h2 {
     width: 100%;
 }
 
+.edit-task .curr {
+    margin-bottom:5px;
+}
+
 .curr span  {
     width:70%;
     display: inline-block;
@@ -129,7 +129,7 @@ body h2 {
 }
 
 .edit-task .add-user button {
-    width: 25%;
+    /* width: 25%; */
     display: inline-block;
 }
 
@@ -158,7 +158,7 @@ body h2 {
 }
 
 .user-profile label {
-    width:55%;
+    width:135px;
 }
 
 .user-profile div {

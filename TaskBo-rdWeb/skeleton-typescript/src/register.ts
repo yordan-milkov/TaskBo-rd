@@ -1,18 +1,21 @@
 import { inject } from 'aurelia-dependency-injection';
 import { ConnectionManager } from './ConnectionManager';
 import {Aurelia} from 'aurelia-framework';
+import {ValidationControllerFactory, ValidationRules, ValidationController  } from 'aurelia-validation';
 
-@inject(Aurelia, ConnectionManager)
+@inject(Aurelia, ConnectionManager, ValidationControllerFactory)
 export class Register
 {
     private aurelia: Aurelia;
     protected connect: ConnectionManager;
+    protected controller: ValidationController;
     heading: string;
     user: any;
-    constructor(aurelia: Aurelia, connect: ConnectionManager)
+    constructor(aurelia: Aurelia, connect: ConnectionManager, controll: ValidationControllerFactory)
     {
         this.connect = connect;
         this.aurelia = aurelia
+        this.controller =  controll.createForCurrentScope();
         this.user   = new Object();
         this.user.newPass      = new String()
         this.user.repeatPass   = new String()
@@ -39,6 +42,7 @@ export class Register
 
     saveProfile()
     {
+        this.controller.reset()
         if ( String(this.user.newPass) === String(this.user.repeatPass) && String(this.user.newPass) )
         {
             this.connect.createProfile( this.user )
@@ -59,6 +63,7 @@ export class Register
         }
         else
         {
+            this.controller.addError('New password doen\'t match.', 'password')
             console.log( 'new password doen\'t match' )
         }
     }

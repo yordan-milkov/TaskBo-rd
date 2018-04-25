@@ -7,7 +7,8 @@ export function configure(aurelia: Aurelia) {
     .standardConfiguration()
     .developmentLogging()
     .plugin('aurelia-dialog')
-    .plugin('aurelia-autocomplete');
+    .plugin('aurelia-autocomplete')
+    .plugin('aurelia-validation')
     
     console.log((<any>DOM));
 

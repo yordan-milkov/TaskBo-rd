@@ -5,13 +5,13 @@
 			<h2>Edit task with id: ${task.id}</h2>
 			<div class="edit-task-info">
 				<label for="taskName">Name: </label>
-				<input type="text" class="form-control" value.bind="task.name" placeholder="task.name">
+				<input type="text" class="form-control" value.bind="task.name" placeholder="task.name"><br>
 				<label for="taskDescr">Description: </label>
 				<input type="text" class="form-control" value.bind="task.description" placeholder="task.description">
 			</div>
 			</br>
 			<div class="assignees">
-				<label for="taskAssignees">Assigned to: </label>
+				<h3 for="taskAssignees">Assigned to: </h3>
 				<ul class="list-unstyled">
 					<li class="curr" repeat.for="currAssignie of assigniees">
 						<span>${currAssignie}</span>
@@ -20,6 +20,7 @@
 				</ul>
 			</div>
 			<div class="add-user">
+				<h3 for="taskAssignees">Assigne users to task: </h3>				
 				<auto-complete items.bind="groupUsers" result.two-way="selected"></auto-complete>
 				<button class="btn btn-success glyphicon glyphicon-plus" click.trigger='addUser()'></button>
 			</div>
@@ -27,6 +28,7 @@
 				<label for="taskDueTo">DueTo: </label>
 				<div>${task.dueTo}</div>
 			</div>-->
+			<h3 for="taskAssignees">Delete items from the checklist: </h3>		
 			<div class="checkboxes" repeat.for="checkbox of checkboxes">
 				<div>
 					<input class="form-control" type="type" value.bind="checkbox.name" placeholder="checkbox.name">
